@@ -1,0 +1,30 @@
+{
+  "name": "applyorbit",
+  "version": "1.0.0",
+  "description": "An Application tracker and Resume tailoring app",
+  "keywords": [
+    "default"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "default"
+  },
+  "license": "ISC",
+  "author": "Saurav Sinha",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "test": "default",
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.103.3",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
