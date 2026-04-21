@@ -5,10 +5,11 @@ import {
     deleteApplications,
     updateApplications
 } from '../controllers/applicationControllers.js'
+import protect from '../middleware/protect.js'
 
 export const applicationRouter = express.Router()
 
-applicationRouter.get('/', getApplications)
-applicationRouter.post('/', addApplications)
-applicationRouter.patch('/:id', updateApplications)
-applicationRouter.delete('/:id', deleteApplications)
+applicationRouter.get('/', protect, getApplications)
+applicationRouter.post('/', protect, addApplications)
+applicationRouter.patch('/:id', protect, updateApplications)
+applicationRouter.delete('/:id', protect, deleteApplications)

@@ -1,12 +1,13 @@
 import supabase from "../db/supabaseClient.js";
-const TestUser = 'user_001'
 
 export async function getApplications(req, res){
 
     try{
+        const userId = req.user.id
         const { data, error } = await supabase
         .from('applications')
         .select('*')
+        .eq("user_id", userId)
         .order('created_at', {
         ascending: false,
         })
@@ -23,11 +24,12 @@ export async function getApplications(req, res){
 
 export async function addApplications(req, res){
     try{
+        const userId = req.user.id;
         const{company, role, status, date_applied, jd_link, notes} = req.body;
 
         const { data, error } = await supabase
         .from('applications')
-        .insert([{user_id:TestUser, company, role, status, date_applied, jd_link, notes }])
+        .insert([{user_id:userId, company, role, status, date_applied, jd_link, notes }])
         .select();
 
         if(error){
@@ -43,14 +45,16 @@ export async function addApplications(req, res){
 export async function deleteApplications(req, res){
     try{
         const {id} = req.params;
-
+        const userId = req.user.id;
+        
         const {error} = await supabase
         .from('applications')
         .delete()
         .eq('id',id)
+        .eq('user_id', userId)
 
         if(error) throw error;
-        res.json({message: 'Application deleted'})
+        res.status(200).json({message: 'Application deleted'})
     }catch(error){
         console.error('Error deleting application:', error.message)
         res.status(500)
@@ -61,11 +65,13 @@ export async function updateApplications(req, res){
     try{
         const { id } = req.params;
         const updates = req.body;
-        
+        const userId = req.user.id;
+
         const {data, error} = await supabase
         .from('applications')
         .update(updates)
         .eq('id', id)
+        .eq('user_id', userId)
         .select()
 
         if(error){
