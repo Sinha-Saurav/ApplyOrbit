@@ -27,15 +27,20 @@ export async function addApplications(req, res){
         const userId = req.user.id;
         const{company, role, status, date_applied, jd_link, notes} = req.body;
 
-        const { data, error } = await supabase
-        .from('applications')
-        .insert([{user_id:userId, company, role, status, date_applied, jd_link, notes }])
-        .select();
-
-        if(error){
-            throw error
+        if(!company || !role){
+            return res.status(400).json({message: "Company name and role is required"})
         }
+        const { data, error } = await supabase
+            .from('applications')
+            .insert([{user_id:userId, company, role, status, date_applied, jd_link, notes }])
+            .select();
+    
+            if(error){
+                throw error
+            }
+
         res.status(201).json(data[0])
+
     }catch(error){
         console.error('Error adding application:',error.message)
         res.status(500).json({error: error.message});

@@ -78,4 +78,68 @@ authRouter.post("/signOut", async(req, res) => {
     }
 })
 
+authRouter.get("/verify", async(req, res)=>{
+    try{
+        const {token_hash, type} = req.query;
+
+        if(token_hash && type){
+            const { error } = await supabase.auth..verifyOtp({
+                type,
+                token_hash,
+            })
+
+            if(error){
+                return res.status(400).json({message: error.message})
+            }
+
+            res.status(200).json({message: "Email verified successfully"})
+        }
+
+    }catch(error){
+        return res.status(500).json({message: "Unexpected error occurred"})
+    }
+})
+
+authRouter.post('/forgot-password', async(req, res)=>{
+    try{
+        const{email} = req.body;
+
+        if(!email){
+            return res.status(400).json("Email is required")
+        }
+
+        const {error} = await supabase.auth.resetPasswordForEmail(email, {
+            redirectTo: "http://localhost:5173/auth/reset-password"
+        })
+
+        if(error){
+            return res.status(200).json({message: error.message})
+        }
+
+        return res.status(200).json({ message: "Password reset email sent" })
+    }
+    catch(error){
+        return res.status(500).json({message: "Unexpected error occurred"})
+    }
+})
+
+authRouter.post("/reset-password", async(req, res)=>{
+    try{
+        const { new_password } = req.body;
+
+        const { error } = await supabase.auth.updateUser({
+            password: new_password
+        });
+
+        if (error) {
+            return res.status(400).json({ message: error.message });
+        }
+
+        res.status(200).json({ message: "Password updated successfully" });
+    }
+    catch(error){
+        res.status(500).json({ message: "Unexpected error occurred" });
+    }
+})
+
 export default authRouter;
