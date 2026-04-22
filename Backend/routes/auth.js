@@ -83,7 +83,7 @@ authRouter.get("/verify", async(req, res)=>{
         const {token_hash, type} = req.query;
 
         if(token_hash && type){
-            const { error } = await supabase.auth..verifyOtp({
+            const { error } = await supabase.auth.verifyOtp({
                 type,
                 token_hash,
             })
