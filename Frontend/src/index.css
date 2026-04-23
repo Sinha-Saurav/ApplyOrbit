@@ -22,3 +22,11 @@ body {
 .kanban-scroll {
   overflow-x: hidden;
 }
+
+.label-style{
+  @apply text-sm font-medium text-gray-700
+}
+
+.input-field-style{
+  @apply border border-gray-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-[#e76f51] transition-colors
+}
