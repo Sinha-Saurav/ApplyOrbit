@@ -1,7 +1,8 @@
 import React from 'react'
+import { AppContext } from '../context/AppContext';
 
 export default function AddApplication({onAddApp}) {
-
+    const {selectedApp, setSelectedApp, addApp, editApp} = React.useContext(AppContext)
     const [isOpen, setIsOpen] = React.useState(false)
 
     const [company, setCompany] = React.useState("");
@@ -11,19 +12,40 @@ export default function AddApplication({onAddApp}) {
     const [jd_link, setJd_link] = React.useState("");
     const [notes, setNotes] = React.useState("");
 
-    function handleSubmit(){
-        onAddApp({
-            id: Date.now().toString(),
-            company,
-            role,
-            status,
-            date,
-        });
+    React.useEffect(()=>{
+        if(selectedApp){
+            setCompany(selectedApp.company);
+            setRole(selectedApp.role);
+            setDate(selectedApp.date);
+            setStatus(selectedApp.status);
+            setNotes(selectedApp.notes || "");
+            setJd_link(selectedApp.jd_link || "");
 
+            setIsOpen(true);
+        }
+    }, [selectedApp])
+
+    function handleSubmit(){
+        if(selectedApp){
+            editApp({ ...selectedApp, company, role, date, status, notes, jd_link });
+        }else{
+            addApp({
+                id: Date.now().toString(),
+                company,
+                role,
+                status,
+                date,
+            });
+        }
+        setSelectedApp(null)
         setIsOpen(false);
     }
 
-
+    function handleClose(){
+        setSelectedApp(null)
+        setIsOpen(false)
+    }
+   
     return (
         <>
             <div onClick={() => setIsOpen(true)} className='flex items-center px-4 py-2 border-none rounded-lg cursor-pointer bg-[#e76f51] text-[#ffffff] gap-1.5
@@ -39,10 +61,10 @@ export default function AddApplication({onAddApp}) {
                         {/*Header*/}
                         <div className='flex justify-between items-center mb-6'>
 
-                            <div className='text-lg font-semibold text-gray-800'>Add Application</div>
+                            <div className='text-lg font-semibold text-gray-800'>{selectedApp? "Edit Application" : "Add Application"}</div>
 
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"
-                                className=' text-gray-500 hover:text-gray-800 cursor-pointer' onClick={() => setIsOpen(false)}><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+                                className=' text-gray-500 hover:text-gray-800 cursor-pointer' onClick={handleClose}><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
 
                         </div>
 
@@ -132,7 +154,7 @@ export default function AddApplication({onAddApp}) {
 
                         {/*Footer*/}
                         <div className='flex mt-6 gap-4 justify-end'>
-                            <button onClick={() => setIsOpen(close)}
+                            <button onClick={handleClose}
                                 className='cursor-pointer px-4 py-2 text-sm text-gray-500 hover:text-gray-700'
                             >
                                 Cancel
@@ -141,7 +163,7 @@ export default function AddApplication({onAddApp}) {
                                 className='text-sm px-4 py-2 bg-[#e76f51] font-medium text-white rounded-lg 
                                 hover:bg-[#d85f41] cursor-pointer'
                             >
-                                Add Application
+                                {selectedApp? "Confirm" : "Add Application"}
                             </button>
                         </div>
 

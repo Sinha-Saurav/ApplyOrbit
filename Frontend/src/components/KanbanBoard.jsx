@@ -1,4 +1,5 @@
 import React from "react";
+import { AppContext } from "../context/AppContext";
 import {
     DndContext,
     DragOverlay,
@@ -22,7 +23,8 @@ const COLUMN_COLORS = {
 
 
 //Application Card
-function KanbanCard({ app, isDragging }) {
+function KanbanCard({ app, isDragging}) {
+    const {setSelectedApp} = React.useContext(AppContext)
     const { attributes, listeners, setNodeRef, transform } = useDraggable({ id: app.id });
 
     const style = {
@@ -39,8 +41,14 @@ function KanbanCard({ app, isDragging }) {
 
     const col = COLUMN_COLORS[app.status];
 
+    function handleClick(){
+        if(!isDragging) {
+            setSelectedApp(app)
+        }
+    }
+
     return (
-        <div ref={setNodeRef} style={style} {...listeners} {...attributes}>
+        <div ref={setNodeRef} style={style} {...listeners} {...attributes} onClick={handleClick}>
             <div className="font-semibold text-[14px] text-[#111] mb-0.5">
                 {app.company}
             </div>
@@ -89,7 +97,7 @@ function KanbanColumn({ id, cards, activeId }) {
 
             >
                 {cards.map((app) => (
-                    <KanbanCard key={app.id} app={app} isDragging={activeId === app.id} />
+                    <KanbanCard key={app.id} app={app} isDragging={activeId === app.id}/>
                 ))}
                 {cards.length === 0 && (
                     <div className="text-center text-[#d1d5db] text-[12px] pt-18">
@@ -122,11 +130,13 @@ function OverlayCard({ app }) {
 }
 
 //MainBoard
-export default function KanbanBoard({apps, setApps}) {
+export default function KanbanBoard() {
+    const { apps, setApps } = React.useContext(AppContext);
+
     const [activeId, setActiveId] = React.useState(null);
 
     const sensors = useSensors(useSensor(PointerSensor, {
-        activationConstraint: { distance: 5 }, // prevents accidental drags on click
+        activationConstraint: { distance: 5 }, 
     }));
 
     const activeApp = apps.find((a) => a.id === activeId);
