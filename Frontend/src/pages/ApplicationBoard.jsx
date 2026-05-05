@@ -9,12 +9,11 @@ import { AppProvider } from '../context/AppContext';
 export default function ApplicationBoard() {
 
     return (
-        <AppProvider>
             <section className='px-8 py-4'>
                 <div className='flex items-center justify-between'>
                     <div>
                         <h2 className='text-3xl font-bold text-[#264653]'>Job Board</h2>
-                        <p className='text-[12px] text-[#71717A]'>Drag and drop to update application status</p>
+                        <p className='text-[16px] text-[#71717A]'>Drag and drop to update application status</p>
                     </div>
 
                     <AddApplication />
@@ -24,6 +23,5 @@ export default function ApplicationBoard() {
                 <KanbanBoard />
 
             </section>
-        </AppProvider>
     )
 }
