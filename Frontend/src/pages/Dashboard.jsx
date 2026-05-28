@@ -16,7 +16,7 @@ export default function Dashboard(){
         <>
             <section className='px-8 py-10 flex-col'>
                 <div className='mb-5'>
-                    <h1 className='text-3xl font-bold text-[#264653]'>Good Evening, Saurav</h1>
+                    <h1 className=' text-3xl font-bold text-[#264653]'>Good Evening, Saurav</h1>
                     <h2 className='text-[16px] text-[#71717A]'>Here's what's happening with your job search.</h2>
                 </div>
                 <div className='grid grid-cols-[1.5fr_1fr_1fr_1fr_1fr_1fr] gap-4'>

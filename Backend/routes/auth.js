@@ -7,24 +7,25 @@ const supabase = createClient(
     process.env.SUPABASE_KEY
 );
 
-authRouter.post("/signUp", async(req, res)=>{
-    try{
-        const{userName, email, password } = req.body;
+authRouter.post("/signUp", async (req, res) => {
+    try {
+        const { userName, email, password } = req.body;
 
-        if(!userName || !email || !password){
-            return res.status(400).json({message: "All fields are required"})
+        if (!userName || !email || !password) {
+            return res.status(400).json({ message: "All fields are required" })
         }
 
-        const{ data, error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
             email: email,
             password: password,
             options: {
-                data: { userName }
+                data: { userName },
+                emailRedirectTo: 'http://localhost:5173/auth/verify'
             }
         })
 
-        if(error){
-            return res.status(400).json({message: error.message})
+        if (error) {
+            return res.status(400).json({ message: error.message })
         }
 
         res.status(201).json({
@@ -32,22 +33,22 @@ authRouter.post("/signUp", async(req, res)=>{
             user: data.user
         })
     }
-    catch(error){
-        return res.status(400).json({message: "signUp unsuccessful"})
+    catch (error) {
+        return res.status(400).json({ message: "signUp unsuccessful" })
     }
 })
 
-authRouter.post("/login", async(req, res)=>{
-    try{
-        const{email, password} = req.body;
+authRouter.post("/login", async (req, res) => {
+    try {
+        const { email, password } = req.body;
 
-        const{data, error} = await supabase.auth.signInWithPassword({
+        const { data, error } = await supabase.auth.signInWithPassword({
             email: email.toLowerCase(),
             password: password
         });
 
-        if(error){
-            return res.status(400).json({message: error.message})
+        if (error) {
+            return res.status(400).json({ message: error.message })
         }
 
         const userName = data.user.user_metadata.userName
@@ -56,14 +57,14 @@ authRouter.post("/login", async(req, res)=>{
             token: data.session.access_token
         })
     }
-    catch(error){
+    catch (error) {
         res.status(400).json({
             message: "Unexpected error occurred"
         })
     }
 })
 
-authRouter.post("/signOut", async(req, res) => {
+authRouter.post("/signOut", async (req, res) => {
     try {
         const { error } = await supabase.auth.signOut();
 
@@ -78,53 +79,32 @@ authRouter.post("/signOut", async(req, res) => {
     }
 })
 
-authRouter.get("/verify", async(req, res)=>{
-    try{
-        const {token_hash, type} = req.query;
 
-        if(token_hash && type){
-            const { error } = await supabase.auth.verifyOtp({
-                type,
-                token_hash,
-            })
+authRouter.post('/forgot-password', async (req, res) => {
+    try {
+        const { email } = req.body;
 
-            if(error){
-                return res.status(400).json({message: error.message})
-            }
-
-            res.status(200).json({message: "Email verified successfully"})
-        }
-
-    }catch(error){
-        return res.status(500).json({message: "Unexpected error occurred"})
-    }
-})
-
-authRouter.post('/forgot-password', async(req, res)=>{
-    try{
-        const{email} = req.body;
-
-        if(!email){
+        if (!email) {
             return res.status(400).json("Email is required")
         }
 
-        const {error} = await supabase.auth.resetPasswordForEmail(email, {
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
             redirectTo: "http://localhost:5173/auth/reset-password"
         })
 
-        if(error){
-            return res.status(200).json({message: error.message})
+        if (error) {
+            return res.status(200).json({ message: error.message })
         }
 
         return res.status(200).json({ message: "Password reset email sent" })
     }
-    catch(error){
-        return res.status(500).json({message: "Unexpected error occurred"})
+    catch (error) {
+        return res.status(500).json({ message: "Unexpected error occurred" })
     }
 })
 
-authRouter.post("/reset-password", async(req, res)=>{
-    try{
+authRouter.post("/reset-password", async (req, res) => {
+    try {
         const { new_password } = req.body;
 
         const { error } = await supabase.auth.updateUser({
@@ -137,7 +117,7 @@ authRouter.post("/reset-password", async(req, res)=>{
 
         res.status(200).json({ message: "Password updated successfully" });
     }
-    catch(error){
+    catch (error) {
         res.status(500).json({ message: "Unexpected error occurred" });
     }
 })
