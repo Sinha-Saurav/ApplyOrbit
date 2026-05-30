@@ -16,7 +16,7 @@ export default function AddApplication({onAddApp}) {
         if(selectedApp){
             setCompany(selectedApp.company);
             setRole(selectedApp.role);
-            setDate(selectedApp.date);
+            setDate(selectedApp.date_applied);
             setStatus(selectedApp.status);
             setNotes(selectedApp.notes || "");
             setJd_link(selectedApp.jd_link || "");
@@ -25,18 +25,18 @@ export default function AddApplication({onAddApp}) {
         }
     }, [selectedApp])
 
-    function handleSubmit(){
+    async function handleSubmit(){
+
+        const payLoad = { company, role, status, date_applied: date, jd_link, notes}
+
         if(selectedApp){
-            editApp({ ...selectedApp, company, role, date, status, notes, jd_link });
+            // PATCH
+            await editApp(selectedApp.id, payLoad)
         }else{
-            addApp({
-                id: Date.now().toString(),
-                company,
-                role,
-                status,
-                date,
-            });
+            //POST
+            await addApp(payLoad)
         }
+
         setSelectedApp(null)
         setIsOpen(false);
     }
@@ -101,6 +101,7 @@ export default function AddApplication({onAddApp}) {
                                         type="date"
                                         name="date_applied"
                                         className='input-field-style '
+                                        value={date}
                                         onChange={(e) => setDate(e.target.value)}
                                     />
                                 </div>

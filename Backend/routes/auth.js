@@ -19,7 +19,10 @@ authRouter.post("/signUp", async (req, res) => {
             email: email,
             password: password,
             options: {
-                data: { userName },
+                data: { 
+                    userName,
+                    full_name: userName,
+                },
                 emailRedirectTo: 'http://localhost:5173/auth/verify'
             }
         })
@@ -54,6 +57,8 @@ authRouter.post("/login", async (req, res) => {
         const userName = data.user.user_metadata.userName
         res.status(200).json({
             message: `Welcome ${userName}`,
+            userName: userName,
+            email: data.user.email,
             token: data.session.access_token
         })
     }

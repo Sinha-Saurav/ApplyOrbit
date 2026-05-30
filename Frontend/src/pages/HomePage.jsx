@@ -7,7 +7,7 @@ export default function HomePage() {
     return (
         <>
             <nav className={`flex px-8 justify-between bg-[#FDFBF7] h-16 fixed top-0 right-0 left-0 z-50
-                items-center shadow `}
+                items-center shadow-2xs `}
             >
                 <h1 className="text-2xl font-bold font-['Playfair_Display'] text-[#344E41]">ApplyOrbit</h1>
                 <div className='flex gap-16 text-[#779082] font-semibold'>

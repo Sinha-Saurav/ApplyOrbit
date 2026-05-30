@@ -23,7 +23,8 @@ export default function SignIn(){
 
                 if(data.token){
                     localStorage.setItem('token', data.token);
-                    localStorage.setItem('userName', data.message);
+                    localStorage.setItem('userName', data.userName);
+                    localStorage.setItem('email', data.email)
                     navigate('/dashboard');
                 }
                 return null;

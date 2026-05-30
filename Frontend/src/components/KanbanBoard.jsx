@@ -24,7 +24,7 @@ const COLUMN_COLORS = {
 
 //Application Card
 function KanbanCard({ app, isDragging}) {
-    const {setSelectedApp} = React.useContext(AppContext)
+    const {setSelectedApp, deleteApp} = React.useContext(AppContext)
     const { attributes, listeners, setNodeRef, transform } = useDraggable({ id: app.id });
 
     const style = {
@@ -45,8 +45,8 @@ function KanbanCard({ app, isDragging}) {
         setSelectedApp(app)
     }
 
-    function handleDelete(){
-        
+    async function handleDelete(){
+        await deleteApp(app.id)
     }
 
     return (
@@ -70,7 +70,7 @@ function KanbanCard({ app, isDragging}) {
                 >
                     {app.status}
                 </span>
-                <span className="text-[11px] text-[#9ca3af]">{app.date}</span>
+                <span className="text-[11px] text-[#9ca3af]">{app.date_applied}</span>
             </div>
         </div>
     )
@@ -160,7 +160,7 @@ export default function KanbanBoard() {
         setActiveId(active.id);
     }
 
-    function handleDragEnd({ active, over }) {
+    async function handleDragEnd({ active, over }) {
         setActiveId(null);
         if (!over) return;
 
@@ -174,11 +174,28 @@ export default function KanbanBoard() {
         );
 
         // ── API call to your backend ──────────────────────────────
-        // fetch(`/api/applications/${cardId}`, {
-        //   method: "PATCH",
-        //   headers: { "Content-Type": "application/json" },
-        //   body: JSON.stringify({ status: newStatus }),
-        // });
+        try{
+            const token = localStorage.getItem('token')
+            const res = await fetch(`/api/applications/${cardId}`, {
+                method: "PATCH",
+                headers: { 
+                 "Content-Type": "application/json",
+                 "Authorization": `Bearer ${token}`
+                 },
+                body: JSON.stringify({ status: newStatus }),
+              });
+            
+            if(!res.ok){
+                setApps((prev)=>
+                    prev.map((app)=>
+                        app.id = cardId? {...app, status: active.data.current?.status }: app
+                    )
+                );
+            }
+
+        }catch(err){
+            console.error("Failed to update status:", err.message);
+        }
     }
 
     return (

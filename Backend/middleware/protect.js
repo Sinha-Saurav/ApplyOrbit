@@ -6,11 +6,11 @@ const supabase = createClient(
 )
 
 const protect = async (req, res, next) => {
-    try{
+    try {
 
         const token = req.headers.authorization?.split(" ")[1];
 
-        if(!token){
+        if (!token) {
             return res.status(401).json({
                 success: false,
                 message: "No token provided",
@@ -18,15 +18,21 @@ const protect = async (req, res, next) => {
         }
 
         const {
-            data: {user},
+            data: { user },
             error,
         } = await supabase.auth.getUser(token);
 
-        req.user = user;
+        if (error || !user) {
+            return res.status(401).json({
+                success: false,
+                message: "Invalid or expired token",
+            })
+        }
 
+        req.user = user;
         next();
     }
-    catch(error){
+    catch (error) {
         return res.status(500).json({
             success: false,
             message: "Server Error",
