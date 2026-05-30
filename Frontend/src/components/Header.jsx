@@ -33,7 +33,7 @@ export default function Header() {
     }
 
     return (
-        <navbar class="px-8 flex justify-between items-center h-16 bg-[#FDFBF7] shadow-2xs">
+        <navbar class="px-8 flex fixed top-0 right-0 left-0 z-50 justify-between items-center h-16 bg-[#FDFBF7] shadow-2xs">
             <Link class="font-bold text-2xl font-['Playfair_Display'] text-[#344E41]" to="/">ApplyOrbit</Link>
             <div class="flex gap-7 items-center">
                 <NavLink

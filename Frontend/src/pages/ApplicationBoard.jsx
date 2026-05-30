@@ -9,11 +9,11 @@ import { AppProvider } from '../context/AppContext';
 export default function ApplicationBoard() {
 
     return (
-            <section className='px-8 py-4'>
+            <section className='px-8 py-4 mt-15'>
                 <div className='flex my-5 items-center justify-between'>
                     <div>
-                        <h2 className='text-3xl font-bold text-[#264653]'>Job Board</h2>
-                        <p className='text-[16px] text-[#71717A]'>Drag and drop to update application status</p>
+                        <h2 className='text-2xl font-bold text-[#264653]'>Job Board</h2>
+                        <p className='text-[15px] text-[#71717A]'>Drag and drop to update application status</p>
                     </div>
 
                     <AddApplication />

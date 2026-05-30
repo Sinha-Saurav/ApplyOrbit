@@ -23,6 +23,7 @@ export default function SignIn(){
 
                 if(data.token){
                     localStorage.setItem('token', data.token);
+                    localStorage.setItem("refreshToken", data.refreshToken); 
                     localStorage.setItem('userName', data.userName);
                     localStorage.setItem('email', data.email)
                     navigate('/dashboard');

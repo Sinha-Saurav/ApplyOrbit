@@ -8,33 +8,33 @@ export function AppProvider({ children }) {
 
     React.useEffect(() => {
         async function fetchApps() {
-            try{
-                const token = localStorage.getItem("token");
+            try {
+                const token = await getToken();
                 if (!token) return;
-    
+
                 const res = await fetch("/api/applications", {
                     headers: {
                         "Authorization": `Bearer ${token}`
                     }
                 })
 
-                if(!res.ok){
+                if (!res.ok) {
                     throw new Error("Failed to fetch applications");
                 }
                 const data = await res.json();
                 setApps(data);
 
-            }catch(err){
+            } catch (err) {
                 console.log("Fetch applications error: ", err);
             }
-    
-            fetchApps()
-            }
+
+        }   
+        fetchApps()
     }, [])
 
     async function addApp(payLoad) {
-        try{
-            const token = localStorage.getItem("token")
+        try {
+            const token = await getToken()
             const res = await fetch("/api/applications", {
                 method: "POST",
                 headers: {
@@ -44,16 +44,16 @@ export function AppProvider({ children }) {
                 body: JSON.stringify(payLoad),
             });
 
-            if(!res.ok){
+            if (!res.ok) {
                 const errorData = await res.json();
                 throw new Error(errorData.message || "Failed to add application");
             }
             const newApp = await res.json();
             setApps(prev => [...prev, newApp]);
 
-            return {success:true};
+            return { success: true };
 
-        }catch (error) {
+        } catch (error) {
             console.error("Add App Error:", error);
             return { success: false, message: error.message };
         }
@@ -61,9 +61,9 @@ export function AppProvider({ children }) {
     }
 
     async function editApp(id, payLoad) {
-        try{
+        try {
 
-            const token = localStorage.getItem("token")
+            const token = await getToken()
             const res = await fetch(`/api/applications/${id}`, {
                 method: "PATCH",
                 headers: {
@@ -73,17 +73,17 @@ export function AppProvider({ children }) {
                 body: JSON.stringify(payLoad),
             });
 
-            if(!res.ok){
+            if (!res.ok) {
                 const errorData = await res.json();
                 throw new Error(errorData.message || "Failed to edit application")
             }
-            
+
             const updated = await res.json();
             setApps(prev => prev.map(app => app.id === id ? updated : app));
 
-            return {success:true}
+            return { success: true }
 
-        }catch(err){
+        } catch (err) {
             console.error("Add App Error:", error);
             return { success: false, message: error.message };
         }
@@ -92,7 +92,7 @@ export function AppProvider({ children }) {
 
     async function deleteApp(id) {
         try {
-            const token = localStorage.getItem("token");
+            const token = await getToken();
 
             const res = await fetch(`/api/applications/${id}`, {
                 method: "DELETE",
@@ -116,8 +116,33 @@ export function AppProvider({ children }) {
         }
     }
 
+    async function getToken() {
+        const token = localStorage.getItem("token");
+        const refreshToken = localStorage.getItem("refreshToken");
+
+        if (!token || !refreshToken) return null;
+
+        // decode token to check expiry
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        const isExpired = payload.exp * 1000 < Date.now();
+
+        if (!isExpired) return token;
+
+        // refresh if expired
+        const res = await fetch("/api/auth/refresh", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ refreshToken }),
+        });
+
+        const data = await res.json();
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("refreshToken", data.refreshToken);
+        return data.token;
+    }
+
     return (
-        <AppContext.Provider value={{ apps, setApps, addApp, editApp, deleteApp, selectedApp, setSelectedApp }}>
+        <AppContext.Provider value={{ apps, setApps, addApp, editApp, deleteApp, selectedApp, getToken, setSelectedApp }}>
             {children}
         </AppContext.Provider>
     )

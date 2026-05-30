@@ -141,7 +141,7 @@ function OverlayCard({ app }) {
 
 //MainBoard
 export default function KanbanBoard() {
-    const { apps, setApps } = React.useContext(AppContext);
+    const { apps, setApps, getToken } = React.useContext(AppContext);
 
     const [activeId, setActiveId] = React.useState(null);
 
@@ -175,7 +175,7 @@ export default function KanbanBoard() {
 
         // ── API call to your backend ──────────────────────────────
         try{
-            const token = localStorage.getItem('token')
+            const token = await getToken()
             const res = await fetch(`/api/applications/${cardId}`, {
                 method: "PATCH",
                 headers: { 

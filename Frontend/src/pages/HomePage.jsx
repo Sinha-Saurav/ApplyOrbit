@@ -146,10 +146,10 @@ export default function HomePage() {
 
             </main>
 
-            <footer className="flex justify-between items-center px-8 text-sm text-[#7C8478] mt-30 mb-5">
+            <footer className="flex justify-between items-center px-8 text-[12px] text-[#7C8478] mt-30 mb-5">
 
                 <div>
-                    <p className="font-bold font-['Playfair_Display'] text-[18px] text-[#d3703b]">
+                    <p className="font-bold font-['Playfair_Display'] text-sm text-[#d3703b]">
                         ApplyOrbit
                     </p>
                     <p className='italic font-serif'>

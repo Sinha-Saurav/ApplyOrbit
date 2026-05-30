@@ -59,7 +59,8 @@ authRouter.post("/login", async (req, res) => {
             message: `Welcome ${userName}`,
             userName: userName,
             email: data.user.email,
-            token: data.session.access_token
+            token: data.session.access_token,
+            refreshToken: data.session.refresh_token
         })
     }
     catch (error) {
@@ -126,5 +127,24 @@ authRouter.post("/reset-password", async (req, res) => {
         res.status(500).json({ message: "Unexpected error occurred" });
     }
 })
+
+authRouter.post("/refresh", async (req, res) => {
+    try {
+        const { refreshToken } = req.body;
+
+        const { data, error } = await supabase.auth.refreshSession({ 
+            refresh_token: refreshToken 
+        });
+
+        if (error) return res.status(401).json({ message: error.message });
+
+        res.status(200).json({
+            token: data.session.access_token,
+            refreshToken: data.session.refresh_token
+        });
+    } catch (error) {
+        res.status(500).json({ message: "Unexpected error" });
+    }
+});
 
 export default authRouter;
