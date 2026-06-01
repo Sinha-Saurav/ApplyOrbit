@@ -6,6 +6,7 @@ import AuthLayout from './components/AuthLayout'
 import ApplicationBoard from './pages/ApplicationBoard'
 import Dashboard from './pages/Dashboard'
 import HomePage from './pages/HomePage'
+import Settings from './pages/Settings'
 import SignIn from './pages/auth/SignIn'
 import SignUp from './pages/auth/SignUp'
 import Verify from './pages/auth/Verify'
@@ -29,6 +30,11 @@ export default function App(){
                 <Dashboard />
               </ProtectedRoute>
             } />
+            <Route path="settings" element={
+              <ProtectedRoute>
+                <Settings />
+              </ProtectedRoute>
+            }/>
           </Route>
           <Route path="/auth" element={<AuthLayout />}>
             <Route path="signin" element={<SignIn />} />
