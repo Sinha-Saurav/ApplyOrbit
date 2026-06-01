@@ -1,9 +1,10 @@
 import React from 'react'
 import { AppContext } from '../context/AppContext';
 
-export default function AddApplication({onAddApp}) {
+export default function AddApplication({isHidden}) {
     const {selectedApp, setSelectedApp, addApp, editApp} = React.useContext(AppContext)
     const [isOpen, setIsOpen] = React.useState(false)
+    const [formError, setFormError] = React.useState("")
 
     const [company, setCompany] = React.useState("");
     const [role, setRole] = React.useState("");
@@ -11,6 +12,8 @@ export default function AddApplication({onAddApp}) {
     const [status, setStatus] = React.useState("Applied");
     const [jd_link, setJd_link] = React.useState("");
     const [notes, setNotes] = React.useState("");
+    const [location, setLocation] = React.useState("");
+    const [salary, setSalary] = React.useState("");
 
     React.useEffect(()=>{
         if(selectedApp){
@@ -20,6 +23,8 @@ export default function AddApplication({onAddApp}) {
             setStatus(selectedApp.status);
             setNotes(selectedApp.notes || "");
             setJd_link(selectedApp.jd_link || "");
+            setLocation(selectedApp.location || "");
+            setSalary(selectedApp.salary || "");
 
             setIsOpen(true);
         }
@@ -27,7 +32,16 @@ export default function AddApplication({onAddApp}) {
 
     async function handleSubmit(){
 
-        const payLoad = { company, role, status, date_applied: date, jd_link, notes}
+        if(!company || !role || !date){
+            setFormError("Company, Role and Date is required")
+            return;
+        }   
+
+        setFormError("")
+        const payLoad = { company, role, status, jd_link, notes, location, 
+            salary: salary === ""? null : Number(salary),
+            date_applied: date 
+        }
 
         if(selectedApp){
             // PATCH
@@ -48,11 +62,13 @@ export default function AddApplication({onAddApp}) {
    
     return (
         <>
-            <div onClick={() => setIsOpen(true)} className='flex items-center px-4 py-2 border-none rounded-lg cursor-pointer bg-[#e76f51] text-[#ffffff] gap-1.5
-            hover:shadow-[0_4px_12px_rgba(0,0,0,0.2)] hover:border-none transition-all duration-200'>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus-icon lucide-plus"><path d="M5 12h14" /><path d="M12 5v14" /></svg>
-                <span className='font-medium text-[14px]'>Add Application</span>
-            </div>
+            {!isHidden && (
+                <div onClick={() => setIsOpen(true)} className='flex items-center px-4 py-2 border-none rounded-lg cursor-pointer bg-[#e76f51] text-[#ffffff] gap-1.5
+                hover:shadow-[0_4px_12px_rgba(0,0,0,0.2)] hover:border-none transition-all duration-200'>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus-icon lucide-plus"><path d="M5 12h14" /><path d="M12 5v14" /></svg>
+                    <span className='font-medium text-[14px]'>Add Application</span>
+                </div>
+            )}
 
             {isOpen && (
                 <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center">
@@ -69,6 +85,7 @@ export default function AddApplication({onAddApp}) {
                         </div>
 
                         {/* Form */}
+                        
                         <div className='flex flex-col gap-4'>
                             <div className='flex flex-col gap-1'>
                                 <label className='label-style'>Company</label>
@@ -95,6 +112,34 @@ export default function AddApplication({onAddApp}) {
                             </div>
 
                             <div className='flex gap-3'>
+                                <div className='flex flex-col gap-1 flex-1'>
+                                    <label className='label-style'>Location</label>
+                                    <input
+                                        type="text"
+                                        name="location"
+                                        className='input-field-style '
+                                        placeholder='on-site'
+                                        value={location}
+                                        onChange={(e) => setLocation(e.target.value)}
+                                    />
+                                </div>
+
+                                <div className='flex flex-col gap-1 flex-1 relative'>
+                                    <label className='label-style'>Salary</label>
+                                    <input
+                                        type="number"
+                                        name="salary"
+                                        className='input-field-style appearance-none'
+                                        placeholder='₹600,000'
+                                        value={salary}
+                                        onChange={(e) => setSalary(e.target.value)}
+                                    />
+
+                                </div>
+
+                            </div>
+
+                             <div className='flex gap-3'>
                                 <div className='flex flex-col gap-1 flex-1'>
                                     <label className='label-style'>Date Applied</label>
                                     <input
@@ -154,6 +199,7 @@ export default function AddApplication({onAddApp}) {
                         </div>
 
                         {/*Footer*/}
+                        {formError && <p className=" text-red-500 text-sm">{formError}</p>}
                         <div className='flex mt-6 gap-4 justify-end'>
                             <button onClick={handleClose}
                                 className='cursor-pointer px-4 py-2 text-sm text-gray-500 hover:text-gray-700'

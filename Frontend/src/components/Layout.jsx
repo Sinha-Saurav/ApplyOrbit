@@ -8,7 +8,7 @@ export default function Layout() {
         <div>
             <Header />
             <Outlet />
-            <footer className="flex justify-between items-center px-8 text-[12px] text-[#7C8478] mt-30 mb-5">
+            <footer className="flex justify-between items-center px-8 text-[12px] text-[#7C8478] mt-20 mb-5">
 
                 <div>
                     <p className="font-bold font-['Playfair_Display'] text-[16px] text-[#d3703b]">

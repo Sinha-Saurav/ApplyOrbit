@@ -23,15 +23,17 @@ const COLUMN_COLORS = {
 
 
 //Application Card
-function KanbanCard({ app, isDragging}) {
-    const {setSelectedApp, deleteApp} = React.useContext(AppContext)
+function KanbanCard({ app, isDragging }) {
+    const { setSelectedApp, deleteApp } = React.useContext(AppContext)
     const { attributes, listeners, setNodeRef, transform } = useDraggable({ id: app.id });
+
+    const col = COLUMN_COLORS[app.status];
 
     const style = {
         transform: transform ? `translate(${transform.x}px, ${transform.y}px)` : undefined,
         opacity: isDragging ? 0.4 : 1,
         background: "#fff",
-        border: "1px solid #e5e7eb",
+        border: `1px solid ${col.text}`,
         borderRadius: 10,
         padding: "12px 14px",
         cursor: "grab",
@@ -39,13 +41,12 @@ function KanbanCard({ app, isDragging}) {
         marginBottom: 8,
     }
 
-    const col = COLUMN_COLORS[app.status];
 
-    function handleClick(){
+    function handleClick() {
         setSelectedApp(app)
     }
 
-    async function handleDelete(){
+    async function handleDelete() {
         await deleteApp(app.id)
     }
 
@@ -56,19 +57,18 @@ function KanbanCard({ app, isDragging}) {
                     {app.company}
                 </div>
                 <div className="flex gap-1">
-                    <svg onClick={handleClick} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="text-gray-400 p-1 rounded-md cursor-pointer transition-all duration-200 hover:text-green-700 hover:bg-[#c0edd5]"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg>
+                    <svg onClick={handleClick} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="text-gray-400 p-1 rounded-md cursor-pointer transition-all duration-200 hover:text-green-700 hover:bg-[#c0edd5]"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" /><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z" /></svg>
 
-                    <svg onClick={handleDelete} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
-                    className="text-gray-400 p-1 rounded-md cursor-pointer transition-all duration-200 hover:text-[#e76f51] hover:bg-orange-100"><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                    <svg onClick={handleDelete} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        className="text-gray-400 p-1 rounded-md cursor-pointer transition-all duration-200 hover:text-[#e76f51] hover:bg-orange-100"><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" /><path d="M3 6h18" /><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" /></svg>
                 </div>
             </div>
             <div className="mb-2 text-[12px] text-[#6b7280]">{app.role}</div>
             <div className="flex justify-between items-center">
                 <span
-                    className="text-[11px] font-medium py-0.5 px-2 rounded-[20px]"
-                    style={{ backgroundColor: col.bg, color: col.text }}
+                    className="text-[11px] font-medium py-0.5 px-2 rounded-[10px] bg-[#eeeeec] text-[#464646]"
                 >
-                    {app.status}
+                    {app.location || app.status}
                 </span>
                 <span className="text-[11px] text-[#9ca3af]">{app.date_applied}</span>
             </div>
@@ -83,16 +83,21 @@ function KanbanColumn({ id, cards, activeId }) {
     const col = COLUMN_COLORS[id];
 
     return (
-        <div className="flex-1 min-w-[200px]">
+        <div className="flex-1 min-w-[230px]">
             {/* Column Header */}
-            <div className="flex items-center gap-2 mb-3" >
+            <div className="flex items-center gap-2 mb-3 px-2" >
                 <span className="w-2 h-2 rounded-[50%] shrink-[0]"
                     style={{
                         background: col.dot
                     }} />
-                <span className="font-semibold text-[13px] text-[#374151]">{id}</span>
-                <span className="ml-auto text-[11px] font-semibold bg-[#f3f4f6] 
-                    text-[#6b7280] px-[7px] py-[1px] rounded-[20px]"
+                <span className="font-semibold text-[15px] text-[#374151]">{id}</span>
+                <span className="ml-auto text-[11px] font-semibold
+                     px-[7px] py-[1px] rounded-[20px]"
+                    style={{
+                        backgroundColor: col.bg,
+                        color: col.text,
+                        filter: "brightness(0.92)"
+                    }}
                 >
                     {cards.length}
                 </span>
@@ -101,13 +106,16 @@ function KanbanColumn({ id, cards, activeId }) {
             {/* Drop Zone */}
             <div
                 ref={setNodeRef}
-                className={`rounded-xl p-2.5 min-h-[300px] max-h-[550px] overflow-y-auto kanban-scroll transition-colors 
-                    duration-150 ${isOver ? "bg-sky-50 border-[1.5px] border-dashed border-blue-300" : "bg-gray-50 border-[1.5px] border-dashed border-gray-200"
-                    }`}
+                className={`rounded-xl p-2.5 min-h-[500px] max-h-[600px] overflow-y-auto kanban-scroll transition-colors 
+                    duration-150 border-[1.5px] border-dashed`}
+                style={{
+                    borderColor: isOver ? col.text : "#c4c4c4",
+                    backgroundColor: isOver ? col.bg : "#f9fafb"
+                }}
 
             >
                 {cards.map((app) => (
-                    <KanbanCard key={app.id} app={app} isDragging={activeId === app.id}/>
+                    <KanbanCard key={app.id} app={app} isDragging={activeId === app.id} />
                 ))}
                 {cards.length === 0 && (
                     <div className="text-center text-[#d1d5db] text-[12px] pt-18">
@@ -146,7 +154,7 @@ export default function KanbanBoard() {
     const [activeId, setActiveId] = React.useState(null);
 
     const sensors = useSensors(useSensor(PointerSensor, {
-        activationConstraint: { distance: 5 }, 
+        activationConstraint: { distance: 5 },
     }));
 
     const activeApp = apps.find((a) => a.id === activeId);
@@ -174,26 +182,26 @@ export default function KanbanBoard() {
         );
 
         // ── API call to your backend ──────────────────────────────
-        try{
+        try {
             const token = await getToken()
             const res = await fetch(`/api/applications/${cardId}`, {
                 method: "PATCH",
-                headers: { 
-                 "Content-Type": "application/json",
-                 "Authorization": `Bearer ${token}`
-                 },
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
                 body: JSON.stringify({ status: newStatus }),
-              });
-            
-            if(!res.ok){
-                setApps((prev)=>
-                    prev.map((app)=>
-                        app.id = cardId? {...app, status: active.data.current?.status }: app
+            });
+
+            if (!res.ok) {
+                setApps((prev) =>
+                    prev.map((app) =>
+                        app.id = cardId ? { ...app, status: active.data.current?.status } : app
                     )
                 );
             }
 
-        }catch(err){
+        } catch (err) {
             console.error("Failed to update status:", err.message);
         }
     }

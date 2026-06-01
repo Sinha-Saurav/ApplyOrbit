@@ -10,7 +10,7 @@ export default function HomePage() {
                 items-center shadow-2xs `}
             >
                 <h1 className="text-2xl font-bold font-['Playfair_Display'] text-[#344E41]">ApplyOrbit</h1>
-                <div className='flex gap-16 text-[#779082] font-semibold'>
+                <div className='flex gap-10 text-[#779082] font-semibold'>
                     <p
                         className='hover:text-[#C67346] hover:scale-101
                         border-b-2 border-transparent hover:border-[#C67346] cursor-pointer transition-all duration-200'

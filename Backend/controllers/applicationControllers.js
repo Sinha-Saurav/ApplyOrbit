@@ -25,14 +25,14 @@ export async function getApplications(req, res){
 export async function addApplications(req, res){
     try{
         const userId = req.user.id;
-        const{company, role, status, date_applied, jd_link, notes} = req.body;
+        const{company, role, status, date_applied, jd_link, notes, location, salary} = req.body;
 
         if(!company || !role){
             return res.status(400).json({message: "Company name and role is required"})
         }
         const { data, error } = await supabase
             .from('applications')
-            .insert([{user_id:userId, company, role, status, date_applied, jd_link, notes }])
+            .insert([{user_id:userId, company, role, status, date_applied, jd_link, notes, location, salary }])
             .select();
     
             if(error){

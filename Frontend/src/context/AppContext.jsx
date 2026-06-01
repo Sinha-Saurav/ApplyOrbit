@@ -84,8 +84,8 @@ export function AppProvider({ children }) {
             return { success: true }
 
         } catch (err) {
-            console.error("Add App Error:", error);
-            return { success: false, message: error.message };
+            console.error("Add App Error:", err);
+            return { success: false, message: err.message };
         }
 
     }
