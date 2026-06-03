@@ -1,8 +1,8 @@
 import React from 'react'
 import { AppContext } from '../context/AppContext';
 
-export default function AddApplication({isHidden}) {
-    const {selectedApp, setSelectedApp, addApp, editApp} = React.useContext(AppContext)
+export default function AddApplication({ isHidden }) {
+    const { selectedApp, setSelectedApp, addApp, editApp } = React.useContext(AppContext)
     const [isOpen, setIsOpen] = React.useState(false)
     const [formError, setFormError] = React.useState("")
 
@@ -15,8 +15,8 @@ export default function AddApplication({isHidden}) {
     const [location, setLocation] = React.useState("");
     const [salary, setSalary] = React.useState("");
 
-    React.useEffect(()=>{
-        if(selectedApp){
+    React.useEffect(() => {
+        if (selectedApp) {
             setCompany(selectedApp.company);
             setRole(selectedApp.role);
             setDate(selectedApp.date_applied);
@@ -30,36 +30,51 @@ export default function AddApplication({isHidden}) {
         }
     }, [selectedApp])
 
-    async function handleSubmit(){
+    function resetForm() {
+        setCompany("");
+        setRole("");
+        setDate("");
+        setStatus("Applied");
+        setJd_link("");
+        setNotes("");
+        setLocation("");
+        setSalary("");
+        setFormError("");
+    }
 
-        if(!company || !role || !date){
+    async function handleSubmit() {
+
+        if (!company || !role || !date) {
             setFormError("Company, Role and Date is required")
             return;
-        }   
-
-        setFormError("")
-        const payLoad = { company, role, status, jd_link, notes, location, 
-            salary: salary === ""? null : Number(salary),
-            date_applied: date 
         }
 
-        if(selectedApp){
+        setFormError("")
+        const payLoad = {
+            company, role, status, jd_link, notes, location,
+            salary: salary === "" ? null : Number(salary),
+            date_applied: date
+        }
+
+        if (selectedApp) {
             // PATCH
             await editApp(selectedApp.id, payLoad)
-        }else{
+        } else {
             //POST
             await addApp(payLoad)
         }
 
+        resetForm();
         setSelectedApp(null)
         setIsOpen(false);
     }
 
-    function handleClose(){
-        setSelectedApp(null)
-        setIsOpen(false)
+    function handleClose() {
+        resetForm();
+        setSelectedApp(null);
+        setIsOpen(false);
     }
-   
+
     return (
         <>
             {!isHidden && (
@@ -77,7 +92,7 @@ export default function AddApplication({isHidden}) {
                         {/*Header*/}
                         <div className='flex justify-between items-center mb-6'>
 
-                            <div className='text-lg font-semibold text-gray-800'>{selectedApp? "Edit Application" : "Add Application"}</div>
+                            <div className='text-lg font-semibold text-gray-800'>{selectedApp ? "Edit Application" : "Add Application"}</div>
 
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"
                                 className=' text-gray-500 hover:text-gray-800 cursor-pointer' onClick={handleClose}><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
@@ -85,7 +100,7 @@ export default function AddApplication({isHidden}) {
                         </div>
 
                         {/* Form */}
-                        
+
                         <div className='flex flex-col gap-4'>
                             <div className='flex flex-col gap-1'>
                                 <label className='label-style'>Company</label>
@@ -139,7 +154,7 @@ export default function AddApplication({isHidden}) {
 
                             </div>
 
-                             <div className='flex gap-3'>
+                            <div className='flex gap-3'>
                                 <div className='flex flex-col gap-1 flex-1'>
                                     <label className='label-style'>Date Applied</label>
                                     <input
@@ -210,7 +225,7 @@ export default function AddApplication({isHidden}) {
                                 className='text-sm px-4 py-2 bg-[#e76f51] font-medium text-white rounded-lg 
                                 hover:bg-[#d85f41] cursor-pointer'
                             >
-                                {selectedApp? "Confirm" : "Add Application"}
+                                {selectedApp ? "Confirm" : "Add Application"}
                             </button>
                         </div>
 

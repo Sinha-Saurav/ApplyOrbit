@@ -1,8 +1,10 @@
 import React from 'react'
 import { useNavigate, Link, NavLink } from 'react-router-dom'
+import { AppContext } from '../context/AppContext';
 
 export default function Header() {
     const navigate = useNavigate();
+    const { setApps } = React.useContext(AppContext)
     const [isOpen, setIsOpen] = React.useState(false);
     const dropdownRef = React.useRef(null);
 
@@ -29,6 +31,7 @@ export default function Header() {
 
         localStorage.removeItem('token');
         localStorage.removeItem('userName');
+        setApps([])
         navigate('/auth/signin');
     }
 

@@ -6,31 +6,28 @@ export function AppProvider({ children }) {
     const [apps, setApps] = React.useState([]);
     const [selectedApp, setSelectedApp] = React.useState(null);
 
-    React.useEffect(() => {
-        async function fetchApps() {
-            try {
-                const token = await getToken();
-                if (!token) return;
+    async function fetchApps() {
+        try {
+            const token = await getToken();
+            if (!token) return;
 
-                const res = await fetch("/api/applications", {
-                    headers: {
-                        "Authorization": `Bearer ${token}`
-                    }
-                })
-
-                if (!res.ok) {
-                    throw new Error("Failed to fetch applications");
+            const res = await fetch("/api/applications", {
+                headers: {
+                    "Authorization": `Bearer ${token}`
                 }
-                const data = await res.json();
-                setApps(data);
+            })
 
-            } catch (err) {
-                console.log("Fetch applications error: ", err);
+            if (!res.ok) {
+                throw new Error("Failed to fetch applications");
             }
+            const data = await res.json();
+            setApps(data);
 
-        }   
-        fetchApps()
-    }, [])
+        } catch (err) {
+            console.log("Fetch applications error: ", err);
+        }
+
+    }
 
     async function addApp(payLoad) {
         try {
@@ -142,7 +139,7 @@ export function AppProvider({ children }) {
     }
 
     return (
-        <AppContext.Provider value={{ apps, setApps, addApp, editApp, deleteApp, selectedApp, getToken, setSelectedApp }}>
+        <AppContext.Provider value={{apps, setApps, addApp, editApp, deleteApp, fetchApps, getToken, setSelectedApp }}>
             {children}
         </AppContext.Provider>
     )

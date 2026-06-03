@@ -1,8 +1,10 @@
 import React from 'react'
 import { useNavigate, NavLink } from 'react-router-dom'
+import { AppContext } from '../../context/AppContext';
 
 export default function SignIn(){
     const navigate = useNavigate();
+    const { fetchApps } = React.useContext(AppContext)
 
         const [error, submitAction, isPending] = React.useActionState(
             async(previousState, formData) => {
@@ -26,6 +28,7 @@ export default function SignIn(){
                     localStorage.setItem("refreshToken", data.refreshToken); 
                     localStorage.setItem('userName', data.userName);
                     localStorage.setItem('email', data.email)
+                    await fetchApps();
                     navigate('/dashboard');
                 }
                 return null;

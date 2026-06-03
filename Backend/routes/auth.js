@@ -1,150 +1,24 @@
 import { createClient } from "@supabase/supabase-js";
 import express from 'express';
+import{
+    signUp,
+    signIn,
+    signOut,
+    forgotPassword,
+    resetPassword,
+    refreshToken,
+    updateProfile,
+    deleteAccount
+}from "../controllers/authController.js"
+import protect from "../middleware/protect.js";
 
-const authRouter = express.Router()
-const supabase = createClient(
-    process.env.SUPABASE_URL,
-    process.env.SUPABASE_KEY
-);
+export const authRouter = express.Router()
 
-authRouter.post("/signUp", async (req, res) => {
-    try {
-        const { userName, email, password } = req.body;
-
-        if (!userName || !email || !password) {
-            return res.status(400).json({ message: "All fields are required" })
-        }
-
-        const { data, error } = await supabase.auth.signUp({
-            email: email,
-            password: password,
-            options: {
-                data: { 
-                    userName,
-                    full_name: userName,
-                },
-                emailRedirectTo: 'http://localhost:5173/auth/verify'
-            }
-        })
-
-        if (error) {
-            return res.status(400).json({ message: error.message })
-        }
-
-        res.status(201).json({
-            message: "SignUp successful, please verify your email",
-            user: data.user
-        })
-    }
-    catch (error) {
-        return res.status(400).json({ message: "signUp unsuccessful" })
-    }
-})
-
-authRouter.post("/login", async (req, res) => {
-    try {
-        const { email, password } = req.body;
-
-        const { data, error } = await supabase.auth.signInWithPassword({
-            email: email.toLowerCase(),
-            password: password
-        });
-
-        if (error) {
-            return res.status(400).json({ message: error.message })
-        }
-
-        const userName = data.user.user_metadata.userName
-        res.status(200).json({
-            message: `Welcome ${userName}`,
-            userName: userName,
-            email: data.user.email,
-            token: data.session.access_token,
-            refreshToken: data.session.refresh_token
-        })
-    }
-    catch (error) {
-        res.status(400).json({
-            message: "Unexpected error occurred"
-        })
-    }
-})
-
-authRouter.post("/signOut", async (req, res) => {
-    try {
-        const { error } = await supabase.auth.signOut();
-
-        if (error) {
-            return res.status(400).json({ message: error.message });
-        }
-
-        res.status(200).json({ message: "Signed out successfully" });
-    }
-    catch (error) {
-        res.status(500).json({ message: "Unexpected error occurred" });
-    }
-})
-
-
-authRouter.post('/forgot-password', async (req, res) => {
-    try {
-        const { email } = req.body;
-
-        if (!email) {
-            return res.status(400).json("Email is required")
-        }
-
-        const { error } = await supabase.auth.resetPasswordForEmail(email, {
-            redirectTo: "http://localhost:5173/auth/reset-password"
-        })
-
-        if (error) {
-            return res.status(200).json({ message: error.message })
-        }
-
-        return res.status(200).json({ message: "Password reset email sent" })
-    }
-    catch (error) {
-        return res.status(500).json({ message: "Unexpected error occurred" })
-    }
-})
-
-authRouter.post("/reset-password", async (req, res) => {
-    try {
-        const { new_password } = req.body;
-
-        const { error } = await supabase.auth.updateUser({
-            password: new_password
-        });
-
-        if (error) {
-            return res.status(400).json({ message: error.message });
-        }
-
-        res.status(200).json({ message: "Password updated successfully" });
-    }
-    catch (error) {
-        res.status(500).json({ message: "Unexpected error occurred" });
-    }
-})
-
-authRouter.post("/refresh", async (req, res) => {
-    try {
-        const { refreshToken } = req.body;
-
-        const { data, error } = await supabase.auth.refreshSession({ 
-            refresh_token: refreshToken 
-        });
-
-        if (error) return res.status(401).json({ message: error.message });
-
-        res.status(200).json({
-            token: data.session.access_token,
-            refreshToken: data.session.refresh_token
-        });
-    } catch (error) {
-        res.status(500).json({ message: "Unexpected error" });
-    }
-});
-
-export default authRouter;
+authRouter.post("/signUp", signUp)
+authRouter.post("/login", signIn)
+authRouter.post("/signOut", signOut)
+authRouter.post('/forgot-password', forgotPassword)
+authRouter.post("/reset-password", resetPassword)
+authRouter.patch("/update-profile", protect, updateProfile)
+authRouter.post("/refresh", refreshToken);
+authRouter.delete("/delete-account", protect, deleteAccount)

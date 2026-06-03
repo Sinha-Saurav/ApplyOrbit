@@ -11,11 +11,13 @@ export function NumericCards(){
     const interviews = apps.filter(app => app.status === "Interview").length;
     const offers = apps.filter(app => app.status === "Offer").length;
     const rejected = apps.filter(app => app.status === "Rejected").length;
+
+    const userName = localStorage.getItem("userName")
     return(
 
     <section className='px-8 py-10 mt-15 flex-col'>
                 <div className='mb-5'>
-                    <h1 className=' text-2xl font-bold text-[#264653]'>Good Evening, Saurav</h1>
+                    <h1 className=' text-2xl font-bold text-[#264653]'>Good Evening, {userName}</h1>
                     <h2 className='text-[16px] text-[#71717A]'>Here's what's happening with your job search.</h2>
                 </div>
                 <div className='grid grid-cols-[1.5fr_1fr_1fr_1fr_1fr_1fr] gap-4'>

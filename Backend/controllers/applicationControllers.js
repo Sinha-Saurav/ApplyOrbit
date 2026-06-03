@@ -60,9 +60,28 @@ export async function deleteApplications(req, res){
 
         if(error) throw error;
         res.status(200).json({message: 'Application deleted'})
+        
     }catch(error){
         console.error('Error deleting application:', error.message)
-        res.status(500)
+        res.status(500).json({ message: "Failed to delete application" });
+    }
+}
+
+export async function deleteAllApplications(req, res){
+    try{
+        const userId = req.user.id;
+
+        const { error } = await supabase
+        .from("applications")
+        .delete()
+        .eq("user_id", userId);
+
+        if(error) throw error;
+        res.status(200).json({message: "All applications deleted"})
+
+    }catch(err){
+        console.error('Error deleting applications:', err.message)
+        res.status(500).json({ message: "Failed to delete applications" });
     }
 }
 
