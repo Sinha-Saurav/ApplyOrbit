@@ -43,10 +43,10 @@ export default function Dashboard() {
                             border-[1px] border-transparent px-2 rounded-2xl hover:border-[#E76F51] transition-all duration-300'>
 
                             <p className='text-sm font-semibold text-[#EA5812]'>View all</p>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" 
-                            fill="none" stroke="#EA5812" stroke-width="2" stroke-linecap="round" 
-                            stroke-linejoin="round" class="lucide lucide-move-right-icon lucide-move-right">
-                                <path d="M18 8L22 12L18 16"/><path d="M2 12H22"/></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="#EA5812" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-move-right-icon lucide-move-right">
+                                <path d="M18 8L22 12L18 16" /><path d="M2 12H22" /></svg>
                         </div>
                     </div>
 
@@ -63,7 +63,7 @@ export default function Dashboard() {
                                 >
 
                                     <td className="px-5 py-2 text-zinc-800 font-semibold">
-                                        {app.company}
+                                        {app.company.charAt(0).toUpperCase() + app.company.slice(1)}
                                     </td>
 
                                     <td className="px-5 py-3 text-sm font-medium text-gray-600">
@@ -90,6 +90,9 @@ export default function Dashboard() {
 
                                     <td className="px-5 py-3 text-sm text-gray-500">
                                         {app.date_applied}
+                                    </td>
+                                    <td className="px-5 py-2 text-gray-500 text-sm">
+                                        {app.salary ? `₹${app.salary.toLocaleString()}` : "—"}
                                     </td>
 
                                 </tr>

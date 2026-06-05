@@ -78,11 +78,11 @@ export default function AddApplication({ isHidden }) {
     return (
         <>
             {!isHidden && (
-                <div onClick={() => setIsOpen(true)} className='flex items-center px-4 py-2 border-none rounded-lg cursor-pointer bg-[#e76f51] text-[#ffffff] gap-1.5
-                hover:shadow-[0_4px_12px_rgba(0,0,0,0.2)] hover:border-none transition-all duration-200'>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus-icon lucide-plus"><path d="M5 12h14" /><path d="M12 5v14" /></svg>
-                    <span className='font-medium text-[14px]'>Add Application</span>
-                </div>
+                    <div onClick={() => setIsOpen(true)} className='flex items-center px-4 py-2 border-none rounded-lg cursor-pointer bg-[#e76f51] text-[#ffffff] gap-1.5
+                    hover:shadow-[0_4px_12px_rgba(0,0,0,0.2)] hover:border-none transition-all duration-200'>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus-icon lucide-plus"><path d="M5 12h14" /><path d="M12 5v14" /></svg>
+                        <span className='font-medium text-[14px]'>Add Application</span>
+                    </div>
             )}
 
             {isOpen && (

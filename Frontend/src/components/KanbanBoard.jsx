@@ -35,7 +35,7 @@ function KanbanCard({ app, isDragging }) {
         background: "#fff",
         border: `1px solid ${col.text}`,
         borderRadius: 10,
-        padding: "12px 14px",
+        padding: "13px 14px",
         cursor: "grab",
         userSelect: "none",
         marginBottom: 8,
@@ -54,7 +54,7 @@ function KanbanCard({ app, isDragging }) {
         <div ref={setNodeRef} style={style} {...listeners} {...attributes}>
             <div className="flex justify-between">
                 <div className="font-semibold text-[14px] text-[#111] mb-0.5">
-                    {app.company}
+                    {app.company.charAt(0).toUpperCase() + app.company.slice(1)}
                 </div>
                 <div className="flex gap-1">
                     <svg onClick={handleClick} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="text-gray-400 p-1 rounded-md cursor-pointer transition-all duration-200 hover:text-green-700 hover:bg-[#c0edd5]"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" /><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z" /></svg>
@@ -63,14 +63,18 @@ function KanbanCard({ app, isDragging }) {
                         className="text-gray-400 p-1 rounded-md cursor-pointer transition-all duration-200 hover:text-[#e76f51] hover:bg-orange-100"><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" /><path d="M3 6h18" /><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" /></svg>
                 </div>
             </div>
-            <div className="mb-2 text-[12px] text-[#6b7280]">{app.role}</div>
+            <div className="mb-5 text-[12px] text-[#6b7280]">{app.role}</div>
             <div className="flex justify-between items-center">
                 <span
-                    className="text-[11px] font-medium py-0.5 px-2 rounded-[10px] bg-[#eeeeec] text-[#464646]"
+                    className="text-[11px] font-medium py-0.5 px-2 rounded-[10px]"
+                    style={{
+                        backgroundColor: col.bg,
+                        color: col.text
+                    }}
                 >
                     {app.location || app.status}
                 </span>
-                <span className="text-[11px] text-[#9ca3af]">{app.date_applied}</span>
+                <span className="text-[11px] ">{app.date_applied}</span>
             </div>
         </div>
     )
@@ -135,13 +139,13 @@ function OverlayCard({ app }) {
         px-[14px] py-[12px] shadow-[0_8px_24px_rgba(0,0,0,0.12)] w-[200px] cursor-grabbing"
         >
             <div className="font-semibold text-[14px] text-[#111] mb-0.5">{app.company}</div>
-            <div className="text-[12px] text-[#6b7280] mb-2">{app.role}</div>
+            <div className="text-[12px] text-[#6b7280] mb-5">{app.role}</div>
             <span style={{
                 fontSize: 11, fontWeight: 500,
                 background: col.bg, color: col.text,
                 padding: "2px 8px", borderRadius: 20,
             }}>
-                {app.status}
+                {app.location || app.status}
             </span>
         </div>
     );
@@ -214,7 +218,7 @@ export default function KanbanBoard() {
                 onDragStart={handleDragStart}
                 onDragEnd={handleDragEnd}
             >
-                <div style={{ display: "flex", gap: 16, overflowX: "auto", paddingBottom: 8 }}>
+                <div style={{ display: "flex",width: "100%" , gap: 16, overflowX: "auto", paddingBottom: 8 }}>
                     {COLUMNS.map((col) => (
                         <KanbanColumn
                             key={col}

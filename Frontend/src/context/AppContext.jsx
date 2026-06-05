@@ -29,6 +29,10 @@ export function AppProvider({ children }) {
 
     }
 
+    React.useEffect(() => {
+        fetchApps();
+    }, []);
+
     async function addApp(payLoad) {
         try {
             const token = await getToken()
