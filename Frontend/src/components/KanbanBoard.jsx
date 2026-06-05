@@ -152,8 +152,9 @@ function OverlayCard({ app }) {
 }
 
 //MainBoard
-export default function KanbanBoard() {
-    const { apps, setApps, getToken } = React.useContext(AppContext);
+export default function KanbanBoard({apps: filterApps}) {
+    const { app: contextApps, setApps, getToken } = React.useContext(AppContext);
+    const apps = filterApps || contextApps;
 
     const [activeId, setActiveId] = React.useState(null);
 

@@ -1,8 +1,8 @@
 import React from 'react'
 import { AppContext } from '../context/AppContext'
 
-export default function TableView() {
-    const { apps, setApps, setSelectedApp, deleteApp } = React.useContext(AppContext);
+export default function TableView({apps: filterApps}) {
+    const { apps: contextApps, setApps, setSelectedApp, deleteApp } = React.useContext(AppContext);
 
     const COLUMN_COLORS = {
         Applied: { bg: "#eff6ff", text: "#2563eb", dot: "#3b82f6" },
@@ -12,31 +12,32 @@ export default function TableView() {
         Rejected: { bg: "#fef2f2", text: "#991b1b", dot: "#ef4444" },
     };
 
+    const apps = filterApps || contextApps
+
     return (
         <div className="bg-white rounded-2xl shadow overflow-hidden">
             <table className="w-full">
                 <thead>
                     <tr className="border-b border-gray-500 text-left">
-                        <th className="pl-10 pr-5 py-5 text-[14px] font-semibold text-gray-500 uppercase tracking-wider">Company</th>
-                        <th className="px-5 py-3 text-[14px] font-semibold text-gray-500 uppercase tracking-wider">Role</th>
-                        <th className="px-5 py-3 text-[14px] font-semibold text-gray-500 uppercase tracking-wider">Status</th>
-                        <th className="px-5 py-3 text-[14px] font-semibold text-gray-500 uppercase tracking-wider">Location</th>
-                        <th className="px-5 py-3 text-[14px] font-semibold text-gray-500 uppercase tracking-wider">Date Applied</th>
-                        <th className="px-5 py-3 text-[14px] font-semibold text-gray-500 uppercase tracking-wider">Salary</th>
+                        <th className="pl-10 pr-5 py-5 text-[14px] font-semibold text-[#44546A] uppercase tracking-wider">Company</th>
+                        <th className="px-5 py-3 text-[14px] font-semibold text-[#44546A] uppercase tracking-wider">Role</th>
+                        <th className="px-5 py-3 text-[14px] font-semibold text-[#44546A] uppercase tracking-wider">Status</th>
+                        <th className="px-5 py-3 text-[14px] font-semibold text-[#44546A] uppercase tracking-wider">Location</th>
+                        <th className="px-5 py-3 text-[14px] font-semibold text-[#44546A] uppercase tracking-wider">Date Applied</th>
+                        <th className="px-5 py-3 text-[14px] font-semibold text-[#44546A] uppercase tracking-wider">Salary</th>
                     </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-100">
+                <tbody className="divide-y divide-gray-300">
                     {apps.length === 0 ? (
                         <tr>
-                            <td colSpan={6} className="text-center py-16 text-gray-400 text-sm">
+                            <td colSpan={6} className="text-center py-16 text-gray-500 text-sm">
                                 No applications yet
                             </td>
                         </tr>
                     ) : (
                         apps.map(app => (
                             <tr
-                                key={app.id}
-                                onClick={() => setSelectedApp(app)}
+
                                 className="cursor-pointer hover:bg-gray-50 transition-colors"
                             >
                                 <td className="pl-10 pr-5 py-3 font-semibold text-gray-800">
@@ -56,13 +57,13 @@ export default function TableView() {
                                         {app.status}
                                     </span>
                                 </td>
-                                <td className="px-5 py-2 text-gray-500 text-sm">
+                                <td className="px-5 py-2 text-gray-600 text-sm">
                                     {app.location || "—"}
                                 </td>
-                                <td className="px-5 py-2 text-gray-500 text-sm">
+                                <td className="px-5 py-2 text-gray-600 text-sm">
                                     {app.date_applied || "—"}
                                 </td>
-                                <td className="px-5 py-2 text-gray-500 text-sm">
+                                <td className="px-5 py-2 text-gray-600 text-sm">
                                     {app.salary ? `₹${app.salary.toLocaleString()}` : "—"}
                                 </td>
                                 <td className="px-5 py-2">

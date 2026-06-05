@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 
 export default function HomePage() {
     const navigate = useNavigate();
+    const token = localStorage.getItem("token");
 
     return (
         <>
@@ -28,17 +29,26 @@ export default function HomePage() {
                     >Resume Tailor</p>
                 </div>
                 <div className='flex gap-5 items-center'>
-                    <p
-                        className='font-semibold cursor-pointer text-[#2d6632] hover:text-[#3ba143] hover:scale-105
-                            bg-gradient-to-r from-[#3ba143] to-[#3a5f4b] bg-no-repeat bg-bottom 
-                            bg-[length:0%_2px] hover:bg-[length:100%_2px] transition-all duration-200'
-                        onClick={() => navigate('/auth/signin')}
-                    >Sign in</p>
-                    <p
-                        className='font-semibold text-white px-2 py-1 cursor-pointer border-none rounded-[6px] bg-[#2d6632]
-                        hover:bg-[#3ba143] hover:scale-104 transition-all duration-200 '
-                        onClick={() => navigate('/auth/signup')}
-                    >Sign up</p>
+                    {!token ? 
+                        (<>
+                            <p
+                                className='font-semibold cursor-pointer text-[#2d6632] hover:text-[#3ba143] hover:scale-105
+                                bg-gradient-to-r from-[#3ba143] to-[#3a5f4b] bg-no-repeat bg-bottom 
+                                bg-[length:0%_2px] hover:bg-[length:100%_2px] transition-all duration-200'
+                                onClick={() => navigate('/auth/signin')}
+                                >Sign in</p>
+                            <p
+                                className='font-semibold text-white px-2 py-1 cursor-pointer border-none rounded-[6px] bg-[#2d6632]
+                                hover:bg-[#3ba143] hover:scale-104 transition-all duration-200 '
+                                onClick={() => navigate('/auth/signup')}
+                                >Sign up</p> 
+                        </>) : 
+                        (<p 
+                            className='font-semibold text-white px-2 py-1 cursor-pointer border-none rounded-[6px] bg-[#df6514]
+                                hover:bg-[#e86214] hover:scale-104 transition-all duration-200 '
+                        >Log Out</p>)
+                    }
+                    
                 </div>
             </nav>
 

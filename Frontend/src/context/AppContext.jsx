@@ -143,7 +143,7 @@ export function AppProvider({ children }) {
     }
 
     return (
-        <AppContext.Provider value={{apps, setApps, addApp, editApp, deleteApp, fetchApps, getToken, setSelectedApp }}>
+        <AppContext.Provider value={{apps, setApps, addApp, editApp, deleteApp, fetchApps, getToken, selectedApp, setSelectedApp }}>
             {children}
         </AppContext.Provider>
     )
