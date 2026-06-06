@@ -29,6 +29,7 @@ export default function SignIn(){
                     localStorage.setItem('userName', data.userName);
                     localStorage.setItem('email', data.email)
                     await fetchApps();
+                    console.log(data.token);
                     navigate('/dashboard');
                 }
                 return null;

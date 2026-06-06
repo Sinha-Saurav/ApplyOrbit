@@ -15,7 +15,7 @@ export default function TableView({apps: filterApps}) {
     const apps = filterApps || contextApps
 
     return (
-        <div className="bg-white rounded-2xl shadow overflow-hidden">
+        <div className="bg-white rounded-2xl mt-10 shadow overflow-hidden">
             <table className="w-full">
                 <thead>
                     <tr className="border-b border-gray-500 text-left">
