@@ -25,7 +25,7 @@ export default function ApplicationBoard() {
         <section className='px-8 py-4 mt-15'>
             <div className='flex my-5 items-center justify-between'>
                 <div>
-                    <h2 className='text-2xl font-bold text-[#264653]'>Job Board</h2>
+                    <h2 className='text-3xl font-bold text-[#264653]'>Job Board</h2>
                     <p className='text-[15px] text-[#71717A]'>Manage and organize your applications</p>
                 </div>
                 <div className='flex items-center gap-3'>

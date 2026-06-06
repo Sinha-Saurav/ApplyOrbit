@@ -56,7 +56,7 @@ export default function Header() {
                     }
                 >Applications</NavLink>
                 <NavLink
-                    to="/application"
+                    to="/resume-tailor"
                     className={({ isActive }) =>
                         `border-b-2 cursor-pointer transition-all duration-300 text-[#779082] text-[15px] font-semibold
                         ${isActive ? "text-[#d9692c] text-[16px] border-[#d9692c]"

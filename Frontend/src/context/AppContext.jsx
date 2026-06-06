@@ -5,6 +5,8 @@ export const AppContext = React.createContext();
 export function AppProvider({ children }) {
     const [apps, setApps] = React.useState([]);
     const [selectedApp, setSelectedApp] = React.useState(null);
+    const [resumeFileName, setResumeFileName] = React.useState(null);
+    const [resumeUploadDate, setResumeUploadDate] = React.useState(null);
 
     async function fetchApps() {
         try {
@@ -28,9 +30,32 @@ export function AppProvider({ children }) {
         }
 
     }
+    async function fetchResume() {
+        try {
+            const token = await getToken();
+            if (!token) return;
+
+            const res = await fetch("/api/resume", {
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            })
+
+            if (!res.ok) return;
+            const data = await res.json();
+            if (data) {
+                setResumeFileName(data.file_name);
+                setResumeUploadDate(new Date(data.created_at).toLocaleDateString());
+            }
+        } catch (err) {
+            console.error("Fetch resume error:", err.message);
+        }
+    }
+
 
     React.useEffect(() => {
         fetchApps();
+        fetchResume();
     }, []);
 
     async function addApp(payLoad) {
@@ -143,7 +168,8 @@ export function AppProvider({ children }) {
     }
 
     return (
-        <AppContext.Provider value={{apps, setApps, addApp, editApp, deleteApp, fetchApps, getToken, selectedApp, setSelectedApp }}>
+        <AppContext.Provider value={{ apps, setApps, addApp, editApp, deleteApp, fetchApps, getToken, 
+        selectedApp, setSelectedApp, resumeFileName, setResumeFileName, resumeUploadDate, setResumeUploadDate }}>
             {children}
         </AppContext.Provider>
     )

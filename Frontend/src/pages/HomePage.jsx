@@ -25,7 +25,7 @@ export default function HomePage() {
                     <p
                         className='hover:text-[#C67346] hover:scale-101
                         border-b-2 border-transparent hover:border-[#C67346] cursor-pointer transition-all duration-200'
-                        onClick={() => navigate('/dashboard')}
+                        onClick={() => navigate('/resume-tailor')}
                     >Resume Tailor</p>
                 </div>
                 <div className='flex gap-5 items-center'>

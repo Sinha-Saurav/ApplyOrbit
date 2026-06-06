@@ -6,6 +6,7 @@ import AuthLayout from './components/AuthLayout'
 import ApplicationBoard from './pages/ApplicationBoard'
 import Dashboard from './pages/Dashboard'
 import HomePage from './pages/HomePage'
+import ResumeTailor from './pages/Resume'
 import Settings from './pages/Settings'
 import SignIn from './pages/auth/SignIn'
 import SignUp from './pages/auth/SignUp'
@@ -35,6 +36,11 @@ export default function App(){
                 <Settings />
               </ProtectedRoute>
             }/>
+            <Route path="resume-tailor" element={
+              <ProtectedRoute>
+                <ResumeTailor />
+              </ProtectedRoute>
+            } />
           </Route>
           <Route path="/auth" element={<AuthLayout />}>
             <Route path="signin" element={<SignIn />} />

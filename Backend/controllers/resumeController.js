@@ -152,7 +152,24 @@ export async function resumeAnalyzer(req, res) {
         res.status(200).json(suggestions);
 
     } catch (err) {
-        console.err("Analyze error: ", err.message);
+        console.error("Analyze error: ", err.message);
         res.status(500).json({ message: "Failed to analyze" });
+    }
+}
+
+export async function getResume(req, res){
+    try{
+        const{ data, error } = await supabase
+            .from("resumes")
+            .select("file_name, created_at")
+            .eq("user_id", req.user.id)
+            .single();
+
+        if(error) return res.status(200).json(null);
+
+        res.status(200).json(data);
+    }catch(err){
+        console.error("Get resume error:", err.message);
+        res.status(500).json({ message: "Failed to fetch resume" });
     }
 }
