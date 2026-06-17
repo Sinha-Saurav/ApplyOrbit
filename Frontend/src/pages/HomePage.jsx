@@ -1,9 +1,11 @@
 import React from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { AppContext } from '../context/AppContext';
 
 export default function HomePage() {
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
+    const { setApps } = React.useContext(AppContext);
 
     const handleSignOut = async (e) => {
         e.preventDefault()
@@ -21,7 +23,7 @@ export default function HomePage() {
 
     return (
         <>
-            <nav className={`flex px-8 justify-between bg-[#FDFBF7] h-16 fixed top-0 right-0 left-0 z-50
+            <nav className={`flex px-8 justify-between bg-[#FDFBF7]/80 backdrop-blur-sm h-16 fixed top-0 right-0 left-0 z-50
                 items-center shadow-2xs `}
             >
                 <h1 className="text-2xl font-bold font-['Playfair_Display'] text-[#344E41]">ApplyOrbit</h1>
