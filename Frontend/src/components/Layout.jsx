@@ -5,7 +5,7 @@ import Header from './Header.jsx'
 
 export default function Layout() {
     return (
-        <div className="min-h-screen flex flex-col">
+        <div className="min-h-screen flex flex-col overflow-x-hidden relative">
             <Header />
 
             <main className="flex-1">
@@ -14,9 +14,10 @@ export default function Layout() {
 
             <footer className="flex justify-between items-center px-8 py-5 text-[12px] text-[#7C8478] mt-12">
                 <div>
-                    <p className="font-bold font-['Playfair_Display'] text-[16px] text-[#d3703b]">
-                        ApplyOrbit
-                    </p>
+                    
+                        <p className="font-bold font-['Playfair_Display'] text-[16px] text-[#d3703b]">
+                            ApplyOrbit
+                        </p>
                     <p className="italic font-serif">
                         © 2026 ApplyOrbit. All rights reserved.
                     </p>
