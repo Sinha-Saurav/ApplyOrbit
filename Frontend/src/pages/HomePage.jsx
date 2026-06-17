@@ -69,7 +69,7 @@ export default function HomePage() {
                 </div>
             </nav>
 
-            <main className='min-h-screen bg-[#767A57] pt-[60px]'>
+            <main className='min-h-screen bg-[#767A57] mt-[60px]'>
                 <section className='grid grid-cols-[1fr_1.5fr]  bg-[#FBF6F1]'>
                     <div className='flex flex-col bg-[#FBF6F1] pl-20 pt-32'>
                         <p className="font-['Playfair_Display'] text-5xl mb-2 text-[#49523b]">Organize today.</p>
