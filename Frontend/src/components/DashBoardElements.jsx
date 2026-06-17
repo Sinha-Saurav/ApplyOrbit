@@ -142,12 +142,6 @@ export function ResumeActivityPlaceholder() {
                 Resume Activity
             </h3>
 
-            {!resumeFileName && (
-                <div className="h-[250px] rounded-xl border-2 border-dashed border-gray-400 flex items-center justify-center text-gray-500">
-                    No Resume Tailored
-                </div>
-            )}
-
             <div className='flex justify-between items-center pb-4 border-b border-gray-400'>
                 <div className='flex gap-4 items-center'>
                     <div className='rounded-4xl bg-[#2c7752] w-12 h-12 text-white flex items-center justify-center'>
@@ -158,12 +152,15 @@ export function ResumeActivityPlaceholder() {
                             <path d="M14 2v5a1 1 0 0 0 1 1h5" /><path d="M10 9H8" /><path d="M16 13H8" /><path d="M16 17H8" /></svg>
                     </div>
                     <div>
-                        <h1 className='text-base font-semibold text-[#006D5B]'>{resumeFileName}</h1>
-                        <h1 className='text-[12px] text-[#009966]'>Last uploaded at {resumeUploadDate}</h1>
+                        <h1 className='text-base font-semibold text-[#006D5B]'>{resumeFileName || "No resume uploaded"}</h1>
+                        <h1 className='text-[12px] text-[#009966]'>Last uploaded at {resumeUploadDate || "—"}</h1>
                     </div>
                 </div>
                 <div>
-                    <h1 className='text-[12px] rounded-2xl px-4 py-1 text-[#006D5B] font-medium border-2 border-[#009966]'>Active</h1>
+                    <h1 className={`text-[12px] rounded-2xl px-4 py-1 font-medium border-2 ${resumeFileName
+                            ? "text-[#006D5B] border-[#009966]"
+                            : "text-[#e57027] border-orange-400"
+                        }`}>{resumeFileName ? "Active" : "No upload"}</h1>
                 </div>
             </div>
             <div className='grid grid-cols-2 gap-4 mt-5'>
@@ -182,7 +179,7 @@ export function ResumeActivityPlaceholder() {
                     </div>
 
                     <div className='flex items-end gap-1 mb-4'>
-                        <p className='text-4xl font-bold text-[#264653]'>{atsScore}</p>
+                        <p className='text-4xl font-bold text-[#264653]'>{atsScore || 0}</p>
                         <p className='text-xl text-[#6B7280] mb-1'>/100</p>
                     </div>
 
@@ -208,7 +205,7 @@ export function ResumeActivityPlaceholder() {
                     </div>
 
                     <div className='flex items-baseline gap-2 mb-4'>
-                        <p className='text-4xl font-bold text-[#264653]'>{scanCount}</p>
+                        <p className='text-4xl font-bold text-[#264653]'>{scanCount || 0}</p>
                         <p className='text-xl text-[#2C7752] font-semibold'>resumes</p>
                     </div>
 
@@ -217,8 +214,8 @@ export function ResumeActivityPlaceholder() {
                             <div
                                 key={i}
                                 className={`h-2 w-4 rounded-full ${i < scanCount
-                                        ? "bg-[#22C55E]"
-                                        : "bg-[#D1D5DB]"
+                                    ? "bg-[#22C55E]"
+                                    : "bg-[#D1D5DB]"
                                     }`}
                             />
                         ))}
