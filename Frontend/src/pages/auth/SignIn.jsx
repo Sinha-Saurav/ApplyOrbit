@@ -4,7 +4,7 @@ import { AppContext } from '../../context/AppContext';
 
 export default function SignIn(){
     const navigate = useNavigate();
-    const { fetchApps } = React.useContext(AppContext)
+    const { fetchApps, fetchResume } = React.useContext(AppContext)
 
         const [error, submitAction, isPending] = React.useActionState(
             async(previousState, formData) => {
@@ -29,6 +29,7 @@ export default function SignIn(){
                     localStorage.setItem('userName', data.userName);
                     localStorage.setItem('email', data.email)
                     await fetchApps();
+                    await fetchResume();
                     console.log(data.token);
                     navigate('/dashboard');
                 }

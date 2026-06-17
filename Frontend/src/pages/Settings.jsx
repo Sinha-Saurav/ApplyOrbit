@@ -1,5 +1,6 @@
 import React from 'react'
 import { AppContext } from "../context/AppContext";
+import supabase from '../lib/supabaseClient';
 
 export default function Settings() {
     const { setApps } = React.useContext(AppContext)
@@ -8,11 +9,12 @@ export default function Settings() {
     const [fullName, setFullName] = React.useState(localStorage.getItem("userName") || "");
     const email = localStorage.getItem('email')
     const [loading, setLoading] = React.useState(false);
+    const [profileLoading, setProfileLoading] = React.useState(false);
     const [message, setMessage] = React.useState("");
     const [deleteConfirm, setDeleteConfirm] = React.useState(false);
 
     async function handleSaveProfile() {
-        setLoading(true);
+        setProfileLoading(true);
         try {
             const res = await fetch("/api/auth/update-profile", {
                 method: "PATCH",
@@ -34,25 +36,22 @@ export default function Settings() {
             setMessage(error.message || "Something Went Wrong");
         } finally {
             setTimeout(() => setMessage(""), 4000);
-            setLoading(false)
+            setProfileLoading(false)
         }
     }
 
     async function handlChangePassword() {
         setLoading(true)
         try {
-            const res = await fetch("/api/auth/reset-password", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
-                body: JSON.stringify({ email })
-            });
+            const { error } = await supabase.auth.resetPasswordForEmail(email,{
+                redirectTo: "http://localhost:5173/auth/reset-password"
+            })
 
-            if (!res.ok) throw new Error("Failed to send reset email.");
+            if(error){
+                throw new Error(error.message);
+            }
 
-            setMessage("Password reset email sent!");
+            setMessage("Password reset email sent! Check your inbox.");
 
         } catch (error) {
             console.error("reset failed:", error);
@@ -147,7 +146,7 @@ export default function Settings() {
             <section className='mt-25 px-8 flex flex-col gap-5'>
 
                 {message && (
-                    <div className="fixed top-8 left-1/2 -translate-x-1/2 bg-[#da2b2b] text-white text-sm font-medium px-4 py-2 rounded-xl shadow-lg z-50">
+                    <div className="fixed top-8 left-1/2 -translate-x-1/2 bg-[#069f3e] text-white text-sm font-medium px-4 py-2 rounded-xl shadow-lg z-50">
                         {message}
                     </div>
                 )}
@@ -206,7 +205,7 @@ export default function Settings() {
                             onClick={handleSaveProfile}
                             disabled={loading}
                         >
-                            {loading ? "Saving..." : "Save changes"}
+                            {profileLoading? "Saving..." : "Save changes"}
                         </button>
                     </div>
                 </div>
