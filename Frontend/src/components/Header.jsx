@@ -24,7 +24,7 @@ export default function Header() {
     const handleSignOut = async (e) => {
         e.preventDefault()
 
-        await fetch("http://localhost:8000/api/auth/signOut", {
+        await fetch("https://applyorbit.onrender.com/api/auth/signOut", {
             method: 'POST',
             headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         });

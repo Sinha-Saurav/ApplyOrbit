@@ -5,6 +5,20 @@ export default function HomePage() {
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
 
+    const handleSignOut = async (e) => {
+        e.preventDefault()
+
+        await fetch("https://applyorbit.onrender.com/api/auth/signOut", {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+        });
+
+        localStorage.removeItem('token');
+        localStorage.removeItem('userName');
+        setApps([])
+        navigate('/auth/signin');
+    }
+
     return (
         <>
             <nav className={`flex px-8 justify-between bg-[#FDFBF7] h-16 fixed top-0 right-0 left-0 z-50
@@ -43,8 +57,8 @@ export default function HomePage() {
                                 onClick={() => navigate('/auth/signup')}
                                 >Sign up</p> 
                         </>) : 
-                        (<p 
-                            className='font-semibold text-white px-2 py-1 cursor-pointer border-none rounded-[6px] bg-[#df6514]
+                        (<p onClick={handleSignOut}
+                            className='font-semibold text-white px-2 py-1 cursor-pointer border-none rounded-[6px] bg-[#e94411]
                                 hover:bg-[#e86214] hover:scale-104 transition-all duration-200 '
                         >Log Out</p>)
                     }
