@@ -22,7 +22,8 @@ export default function HomePage() {
     }
 
     return (
-        <>
+        <div className='bg-[#FBF6F1]'>
+
             <nav className={`flex px-8 justify-between bg-[#FDFBF7]/80 backdrop-blur-sm h-16 fixed top-0 right-0 left-0 z-50
                 items-center shadow-2xs `}
             >
@@ -200,6 +201,6 @@ export default function HomePage() {
                 </div>
 
             </footer>
-        </>
+        </div>
     )
 }
