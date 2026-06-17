@@ -7,8 +7,12 @@ export function AppProvider({ children }) {
     const [selectedApp, setSelectedApp] = React.useState(null);
     const [resumeFileName, setResumeFileName] = React.useState(null);
     const [resumeUploadDate, setResumeUploadDate] = React.useState(null);
+    const [atsScore, setAtsScore] = React.useState(null);
+    const [scanCount, setScanCount] = React.useState(0);
+    const [loading, setLoading] = React.useState(true);
 
     async function fetchApps() {
+        setLoading(true)
         try {
             const token = await getToken();
             if (!token) return;
@@ -27,6 +31,8 @@ export function AppProvider({ children }) {
 
         } catch (err) {
             console.log("Fetch applications error: ", err);
+        }finally{
+            setLoading(false)
         }
 
     }
@@ -46,6 +52,8 @@ export function AppProvider({ children }) {
             if (data) {
                 setResumeFileName(data.file_name);
                 setResumeUploadDate(new Date(data.created_at).toLocaleDateString());
+                setAtsScore(data.ats_score ?? 0)
+                setScanCount(data.scan_count ?? 0)
             }
         } catch (err) {
             console.error("Fetch resume error:", err.message);
@@ -168,8 +176,9 @@ export function AppProvider({ children }) {
     }
 
     return (
-        <AppContext.Provider value={{ apps, setApps, addApp, editApp, deleteApp, fetchApps, getToken, 
-        selectedApp, setSelectedApp, resumeFileName, setResumeFileName, resumeUploadDate, setResumeUploadDate }}>
+        <AppContext.Provider value={{ apps, setApps, addApp, editApp, deleteApp, fetchApps, getToken, loading,
+        selectedApp, setSelectedApp, resumeFileName, atsScore, scanCount, setResumeFileName, 
+        resumeUploadDate, setResumeUploadDate, fetchResume }}>
             {children}
         </AppContext.Provider>
     )

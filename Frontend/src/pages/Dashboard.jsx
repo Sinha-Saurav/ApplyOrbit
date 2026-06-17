@@ -4,11 +4,12 @@ import { AppContext } from '../context/AppContext'
 import { NumericCards } from '../components/DashBoardElements';
 import { AppliationsChart } from '../components/DashboardChart';
 import { ResumeActivityPlaceholder } from '../components/DashBoardElements';
+import { Skeleton } from '../components/Skeleton';
 import AddApplication from '../components/AddApplication';
 
 export default function Dashboard() {
 
-    const { apps, setApps, setSelectedApp } = React.useContext(AppContext)
+    const { apps, setApps, setSelectedApp, loading } = React.useContext(AppContext)
 
     const navigate = useNavigate()
 
@@ -22,6 +23,22 @@ export default function Dashboard() {
 
     const recentApps = apps.slice(-6)
 
+    if (loading) return (
+        <div className='px-8 py-4 mt-15 flex flex-col gap-5'>
+            <div className='grid grid-cols-4 gap-4'>
+                <Skeleton className='h-28' />
+                <Skeleton className='h-28' />
+                <Skeleton className='h-28' />
+                <Skeleton className='h-28' />
+            </div>
+            <div className='grid grid-cols-2 gap-6'>
+                <Skeleton className='h-72' />
+                <Skeleton className='h-72' />
+            </div>
+            <Skeleton className='h-64' />
+        </div>
+    );
+
     return (
         <>
             <NumericCards />
@@ -29,6 +46,9 @@ export default function Dashboard() {
                 <AppliationsChart />
                 <ResumeActivityPlaceholder />
             </div>
+             <img src='/resume_blob.png'
+                    className='absolute -top-4 -right-8 w-150 opacity-90 pointer-events-none -z-40'
+                />
             <AddApplication isHidden={true} />
             <section className="px-8 mt-8">
 

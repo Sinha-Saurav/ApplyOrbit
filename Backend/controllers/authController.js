@@ -1,9 +1,4 @@
-import { createClient } from "@supabase/supabase-js";
-
-const supabase = createClient(
-    process.env.SUPABASE_URL,
-    process.env.SUPABASE_KEY
-);
+import supabase from "../db/supabaseClient.js";
 
 export async function signUp(req, res) {
     try {
@@ -96,6 +91,7 @@ export async function forgotPassword(req, res) {
         })
 
         if (error) {
+            console.error("forgotPassword error:", error.message);
             return res.status(200).json({ message: error.message })
         }
 
@@ -168,10 +164,15 @@ export async function deleteAccount(req, res){
     try{
         const userId = req.user.id;
 
+        const { error: resumeError } = await supabase
+            .from("resumes")
+            .delete()
+            .eq("user_id", userId);
+
         const { error: appError } = await supabase
-        .from("applications")
-        .delete()
-        .eq("user_id", userId);
+            .from("applications")
+            .delete()
+            .eq("user_id", userId);
 
         if(appError) throw appError;
         
@@ -179,7 +180,6 @@ export async function deleteAccount(req, res){
         const {error} = await supabase.auth.admin.deleteUser(
             req.user.id
         )
-
         if(error){
             throw error;
         }

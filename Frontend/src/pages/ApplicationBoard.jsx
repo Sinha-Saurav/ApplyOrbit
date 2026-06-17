@@ -5,19 +5,30 @@ import TableView from '../components/TableView';
 import AddApplication from '../components/AddApplication'
 import { AppProvider } from '../context/AppContext';
 import { AppContext } from '../context/AppContext';
+import { Skeleton } from '../components/Skeleton';
 
 
 export default function ApplicationBoard() {
-    const { apps } = React.useContext(AppContext)
+    const { apps, loading } = React.useContext(AppContext)
 
     const [view, setView] = React.useState("kanban");
     const [search, setSearch] = React.useState("");
 
     const filteredApplications = apps.filter((app) => {
-        return( 
+        return (
             app.company.toLowerCase().includes(search.toLowerCase())
         );
     })
+
+    if (loading) return (
+        <div className='px-8 py-4 mt-15'>
+            <div className='flex gap-4 mt-8'>
+                {[1, 2, 3, 4, 5].map(i => (
+                    <Skeleton key={i} className='flex-1 h-[500px]' />
+                ))}
+            </div>
+        </div>
+    );
 
 
 
@@ -28,11 +39,14 @@ export default function ApplicationBoard() {
                     <h2 className='text-3xl font-bold text-[#264653]'>Job Board</h2>
                     <p className='text-[15px] text-[#71717A]'>Manage and organize your applications</p>
                 </div>
+                 <img src='/resume_blob.png'
+                    className='absolute -top-4 -right-8 w-150 opacity-90 pointer-events-none -z-40'
+                />
                 <div className='flex items-center gap-3'>
                     <div
                         className='group flex items-center  py-1.5 px-3 min-w-[400px] border border-gray-400 rounded-3xl
                             focus-within:border-[#eaa466] focus-within:ring-2 focus-within:ring-[#eaa466] transition-all duration-200'
-                    >   
+                    >
                         <div className='flex items-center gap-2 flex-1'>
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -45,7 +59,7 @@ export default function ApplicationBoard() {
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                                 className=' w-full bg-transparent outline-none text-gray-900 placeholder:text-gray-500'
-                                />
+                            />
                         </div>
                         <p className='opacity-0 group-focus-within:opacity-100 transition-opacity duration-200
                                 cursor-pointer text-sm text-[#E76F51] font-medium'
@@ -79,7 +93,7 @@ export default function ApplicationBoard() {
                 </div>
 
             </div>
-            {view === "kanban" ? <KanbanBoard apps={filteredApplications} /> : <TableView apps={filteredApplications}/>}
+            {view === "kanban" ? <KanbanBoard apps={filteredApplications} /> : <TableView apps={filteredApplications} />}
 
 
         </section>

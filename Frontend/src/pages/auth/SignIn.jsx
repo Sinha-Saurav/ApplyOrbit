@@ -64,7 +64,7 @@ export default function SignIn(){
                         text-sm focus:border-[#284535] outline-none'
                     />
                     
-                    <NavLink className="text-end mt-2 mb-5 underline text-[#284535]">Forgot password?</NavLink>
+                    <NavLink to={"/auth/forgot-password"} className="text-end mt-2 mb-5 underline text-[#284535]">Forgot password?</NavLink>
 
                     {error && (
                         <p className=" text-center text-red-500 text-sm mb-3">{error}</p>

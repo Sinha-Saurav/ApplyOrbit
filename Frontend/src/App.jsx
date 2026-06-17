@@ -12,6 +12,8 @@ import SignIn from './pages/auth/SignIn'
 import SignUp from './pages/auth/SignUp'
 import Verify from './pages/auth/Verify'
 import ProtectedRoute from './components/ProtectedRoute'
+import ResetPassword from './pages/auth/ResetPassword'
+import ForgotPassword from './pages/auth/ForgotPassword'
 
 export default function App(){
   return(
@@ -46,6 +48,8 @@ export default function App(){
             <Route path="signin" element={<SignIn />} />
             <Route path="signup" element={<SignUp />} />
             <Route path="verify" element={<Verify />} />
+            <Route path="reset-password" element={<ResetPassword />} />
+            <Route path="forgot-password" element={<ForgotPassword />} />
           </Route>
         </Routes>
       </BrowserRouter>

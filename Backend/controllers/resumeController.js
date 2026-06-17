@@ -68,9 +68,9 @@ export async function resumeAnalyzer(req, res) {
         if (!jd_text) return res.status(400).json({ message: "JD description is required" })
 
         const { data, error } = await supabase
-            .from('resumes')
-            .select('resume_text')
-            .eq('user_id', userId)
+            .from("resumes")
+            .select("resume_text, scan_count")
+            .eq("user_id", userId)
             .single();
 
         if (error) throw error;
@@ -142,13 +142,19 @@ export async function resumeAnalyzer(req, res) {
             contents: prompt
         });
 
-        let raw = "";
-        for await (const chunk of responseStream) {
-            raw += chunk.text;
-        }
+        const raw = response.text;
         const clean = raw.replace(/```json|```/g, "").trim();
         const suggestions = JSON.parse(clean);
 
+        const { error: updateError } = await supabase
+            .from("resumes")
+            .update({
+                ats_score: suggestions.match_score,
+                scan_count: (data.scan_count || 0) + 1
+            })
+            .eq("user_id", userId);
+
+        if (updateError) throw updateError;
         res.status(200).json(suggestions);
 
     } catch (err) {
@@ -157,18 +163,18 @@ export async function resumeAnalyzer(req, res) {
     }
 }
 
-export async function getResume(req, res){
-    try{
-        const{ data, error } = await supabase
+export async function getResume(req, res) {
+    try {
+        const { data, error } = await supabase
             .from("resumes")
-            .select("file_name, created_at")
+            .select("file_name, created_at, ats_score, scan_count")
             .eq("user_id", req.user.id)
             .single();
 
-        if(error) return res.status(200).json(null);
+        if (error) return res.status(200).json(null);
 
         res.status(200).json(data);
-    }catch(err){
+    } catch (err) {
         console.error("Get resume error:", err.message);
         res.status(500).json({ message: "Failed to fetch resume" });
     }

@@ -44,7 +44,7 @@ export function AppliationsChart() {
       <p className="mb-4 text-sm text-gray-500">Track your progress across all stages</p>
 
       {data.length === 0 ? (
-        <div className="flex items-center justify-center h-[20px] text-gray-400">
+        <div className="flex items-center justify-center h-[200px] text-gray-500">
           No applications yet
         </div>
       ) : (
