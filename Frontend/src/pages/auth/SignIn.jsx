@@ -30,7 +30,6 @@ export default function SignIn(){
                     localStorage.setItem('email', data.email)
                     await fetchApps();
                     await fetchResume();
-                    console.log(data.token);
                     navigate('/dashboard');
                 }
                 return null;

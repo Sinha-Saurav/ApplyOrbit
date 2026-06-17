@@ -22,7 +22,7 @@ export default function ResumeTailor() {
             const formData = new FormData();
             formData.append("resume", file);
 
-            const res = await fetch("/api/resume/upload", {
+            const res = await fetch("https://applyorbit.onrender.com/api/resume/upload", {
                 method: "POST",
                 headers: {
                     "Authorization": `Bearer ${token}`
@@ -46,7 +46,7 @@ export default function ResumeTailor() {
         try {
             const token = await getToken();
 
-            const res = await fetch("/api/resume/analyze", {
+            const res = await fetch("https://applyorbit.onrender.com/api/resume/analyze", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
