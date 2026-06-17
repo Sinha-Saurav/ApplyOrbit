@@ -31,3 +31,11 @@ body {
 .input-field-style{
   @apply border border-gray-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-[#e76f51] transition-colors
 }
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+img {
+  animation: fadeIn 0.3s ease-in;
+}
