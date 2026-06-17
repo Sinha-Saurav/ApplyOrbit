@@ -9,7 +9,7 @@ export default function SignUp(){
             const userName = formData.get('username')
             const password = formData.get('password');
 
-            const res = await fetch('http://localhost:8000/api/auth/signUp',{
+            const res = await fetch('https://applyorbit.onrender.com/api/auth/signUp',{
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({userName, email, password}),

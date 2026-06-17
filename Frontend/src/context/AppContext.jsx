@@ -17,7 +17,7 @@ export function AppProvider({ children }) {
             const token = await getToken();
             if (!token) return;
 
-            const res = await fetch("/api/applications", {
+            const res = await fetch("https://applyorbit.onrender.com/api/applications", {
                 headers: {
                     "Authorization": `Bearer ${token}`
                 }
@@ -41,7 +41,7 @@ export function AppProvider({ children }) {
             const token = await getToken();
             if (!token) return;
 
-            const res = await fetch("/api/resume", {
+            const res = await fetch("https://applyorbit.onrender.com/api/resume", {
                 headers: {
                     "Authorization": `Bearer ${token}`
                 }
@@ -69,7 +69,7 @@ export function AppProvider({ children }) {
     async function addApp(payLoad) {
         try {
             const token = await getToken()
-            const res = await fetch("/api/applications", {
+            const res = await fetch("https://applyorbit.onrender.com/api/applications", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -98,7 +98,7 @@ export function AppProvider({ children }) {
         try {
 
             const token = await getToken()
-            const res = await fetch(`/api/applications/${id}`, {
+            const res = await fetch(`https://applyorbit.onrender.com/api/applications/${id}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
@@ -128,7 +128,7 @@ export function AppProvider({ children }) {
         try {
             const token = await getToken();
 
-            const res = await fetch(`/api/applications/${id}`, {
+            const res = await fetch(`https://applyorbit.onrender.com/api/applications/${id}`, {
                 method: "DELETE",
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -163,7 +163,7 @@ export function AppProvider({ children }) {
         if (!isExpired) return token;
 
         // refresh if expired
-        const res = await fetch("/api/auth/refresh", {
+        const res = await fetch("https://applyorbit.onrender.com/api/auth/refresh", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ refreshToken }),

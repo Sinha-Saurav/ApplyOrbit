@@ -16,7 +16,7 @@ export default function Settings() {
     async function handleSaveProfile() {
         setProfileLoading(true);
         try {
-            const res = await fetch("/api/auth/update-profile", {
+            const res = await fetch("https://applyorbit.onrender.com/api/auth/update-profile", {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
@@ -44,7 +44,7 @@ export default function Settings() {
         setLoading(true)
         try {
             const { error } = await supabase.auth.resetPasswordForEmail(email,{
-                redirectTo: "http://localhost:5173/auth/reset-password"
+                redirectTo: "https://apply-orbit.vercel.app/auth/reset-password"
             })
 
             if(error){
@@ -65,7 +65,7 @@ export default function Settings() {
     async function handleDeleteApps() {
         setLoading(true);
         try {
-            const res = await fetch("/api/applications", {
+            const res = await fetch("https://applyorbit.onrender.com/api/applications", {
                 method: "DELETE",
                 headers: {
                     "Authorization": `Bearer ${token}`
@@ -91,7 +91,7 @@ export default function Settings() {
     async function handleDeleteAccount() {
         if (!confirm("Delete your account permanently? This cannot be undone.")) return;
         try {
-            const res = await fetch("/api/auth/delete-account", {
+            const res = await fetch("https://applyorbit.onrender.com/api/auth/delete-account", {
                 method: "DELETE",
                 headers: {
                     "Authorization": `Bearer ${token}`

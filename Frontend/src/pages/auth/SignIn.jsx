@@ -11,7 +11,7 @@ export default function SignIn(){
                 const email = formData.get('email');
                 const password = formData.get('password');
 
-                const res = await fetch("http://localhost:8000/api/auth/login", {
+                const res = await fetch("https://applyorbit.onrender.com/api/auth/login", {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({email, password}),
