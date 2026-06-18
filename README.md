@@ -18,9 +18,13 @@ ApplyOrbit helps you track every application from first click to final offer, wi
 
 ---
 
-## 📸 Screenshots
+## 📺 Live Demo (GIF)
+<p align="center">
+    <img width="400" height="225" alt="ApplyOrbit_demoVideo" src="https://github.com/user-attachments/assets/3cfd9f29-598e-4b10-a4e8-aeff1617a21b" />
+</p>
 
-> _Add screenshots of the Kanban board, Resume Tailor, and Dashboard here._
+
+
 
 ---
 
