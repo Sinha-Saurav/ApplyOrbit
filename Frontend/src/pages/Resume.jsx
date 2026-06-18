@@ -10,7 +10,10 @@ export default function ResumeTailor() {
 
     const [jdText, setJdText] = React.useState("");
     const [analyzing, setAnalyzing] = React.useState(false);
-    const [tailorData, setTailorData] = React.useState(null);
+    const [tailorData, setTailorData] = React.useState(() => {
+        const saved = sessionStorage.getItem("tailorData");
+        return saved ? JSON.parse(saved) : null;
+    });
 
     async function handleResumeUpload(e) {
         const file = e.target.files[0];
@@ -41,7 +44,14 @@ export default function ResumeTailor() {
         }
     }
 
+    function saveTailorData(data) {
+        setTailorData(data);
+        sessionStorage.setItem("tailorData", JSON.stringify(data));
+    }
+
     async function handleAnalyze() {
+        setTailorData(null);
+        sessionStorage.removeItem("tailorData");
         setAnalyzing(true);
         try {
             const token = await getToken();
@@ -58,7 +68,7 @@ export default function ResumeTailor() {
             if (!res.ok) throw new Error("Failed to analyze")
 
             const data = await res.json();
-            setTailorData(data);
+            saveTailorData(data);
 
             await fetchResume();
 
@@ -85,11 +95,11 @@ export default function ResumeTailor() {
                     <h1 className="text-3xl text-[#324C3F] font-bold">Resume Tailor</h1>
                     <p className='text-base text-[#4C463E]'>Tailor your resume to any job description using AI.</p>
                 </div>
-                
+
             </section>
             <img src='/resume_blob.png'
-                    className='absolute -top-4 -right-8 w-150 opacity-90 pointer-events-none'
-                />
+                className='absolute -top-4 -right-8 w-150 opacity-90 pointer-events-none'
+            />
             <section className='flex gap-5 mt-6'>
 
                 {/* Resume Card */}

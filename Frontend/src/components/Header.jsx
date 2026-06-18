@@ -31,6 +31,7 @@ export default function Header() {
 
         localStorage.removeItem('token');
         localStorage.removeItem('userName');
+        sessionStorage.removeItem("tailorData");
         setApps([])
         navigate('/auth/signin');
     }
