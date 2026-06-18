@@ -1,5 +1,5 @@
 # 🚀 ApplyOrbit
-
+**version - 1.0**
 **AI-powered job application tracker — built to bring order to the job hunt.**
 
 ApplyOrbit helps you track every application from first click to final offer, with an AI resume tailoring engine that scores your resume against job descriptions and gives actionable improvement suggestions.
