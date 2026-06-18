@@ -56,7 +56,7 @@ function KanbanCard({ app, isDragging, setDeleteConfirmId }) {
                 <div className="flex gap-1">
                     <svg onClick={handleClick} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="text-gray-400 p-1 rounded-md cursor-pointer transition-all duration-200 hover:text-green-700 hover:bg-[#c0edd5]"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" /><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z" /></svg>
 
-                    <svg onClick={()=>setDeleteConfirmId(app.id)} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    <svg onClick={() => setDeleteConfirmId(app.id)} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                         className="text-gray-400 p-1 rounded-md cursor-pointer transition-all duration-200 hover:text-[#e76f51] hover:bg-orange-100"><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" /><path d="M3 6h18" /><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" /></svg>
                 </div>
             </div>
@@ -150,7 +150,7 @@ function OverlayCard({ app }) {
 
 //MainBoard
 export default function KanbanBoard({ apps: filterApps }) {
-    const { app: contextApps, setApps, getToken,  deleteApp } = React.useContext(AppContext);
+    const { app: contextApps, setApps, getToken, deleteApp } = React.useContext(AppContext);
     const apps = filterApps || contextApps;
 
     const [activeId, setActiveId] = React.useState(null);
@@ -177,6 +177,7 @@ export default function KanbanBoard({ apps: filterApps }) {
 
         const cardId = active.id;
         const newStatus = over.id;
+        const previousStatus = apps.find(app => app.id === cardId)?.status;
 
         setApps((prev) =>
             prev.map((app) =>
@@ -187,7 +188,7 @@ export default function KanbanBoard({ apps: filterApps }) {
         // ── API call to your backend ──────────────────────────────
         try {
             const token = await getToken()
-            const res = await fetch(`/api/applications/${cardId}`, {
+            const res = await fetch(`https://applyorbit.onrender.com/api/applications/${cardId}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
@@ -199,7 +200,7 @@ export default function KanbanBoard({ apps: filterApps }) {
             if (!res.ok) {
                 setApps((prev) =>
                     prev.map((app) =>
-                        app.id = cardId ? { ...app, status: active.data.current?.status } : app
+                        app.id === cardId ? { ...app, status: previousStatus } : app 
                     )
                 );
             }
@@ -215,7 +216,7 @@ export default function KanbanBoard({ apps: filterApps }) {
                 <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center">
                     <div className="bg-white rounded-2xl p-6 w-[90%] max-w-[500px] shadow-xl flex items-center flex-col">
                         <div className="w-14 h-14 rounded-full bg-orange-300 flex items-center justify-center mb-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-triangle-alert-icon lucide-triangle-alert"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-triangle-alert-icon lucide-triangle-alert"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" /><path d="M12 9v4" /><path d="M12 17h.01" /></svg>
                         </div>
                         <h3 className="text-2xl text-center mb-6 font-semibold text-gray-800 mb-2">Delete Application</h3>
                         <p className="text-sm text-gray-500 mb-6 text-center">
